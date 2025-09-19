@@ -32,4 +32,10 @@ export interface Message{
     date: string;
 }
 
+export interface SelectProps {
+  list: string[];
+  title : string;
+  setSelected : React.Dispatch<React.SetStateAction<string[]>>        
+}
+
 
