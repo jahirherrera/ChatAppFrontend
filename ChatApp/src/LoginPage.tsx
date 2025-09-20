@@ -55,7 +55,6 @@ export default function HomePage() {
         <div className="flex flex-col justify-evenly items-center w-[800px] h-[600px] z-10">
           <section className='flex flex-col justify-center items-center'>
             <h1 className='text-5xl text-white p-5 flex' ><p className='italic'>Byte</p>Talk</h1>
-            
           </section>
 
           <section className='flex flex-col items-center pt-6 border w-80 text-black rounded-2xl shadow-2xl m-4'>

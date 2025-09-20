@@ -2,7 +2,7 @@ import './App.css';
 import {BrowserRouter, Routes, Route} from 'react-router-dom'
 import LoginPage from './LoginPage';
 import HomePage from './HomePage';
-import CreateUser from './CreateUser';
+import CreateUser from './CreatingUser/CreateUser';
 
 export default function App() {
   return(

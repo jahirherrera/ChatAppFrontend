@@ -1,7 +1,9 @@
 import React, { useState, useEffect, use } from "react";
-import type {SelectProps} from "./type.d.tsx";
+import type {SelectProps} from "../type.d.tsx";
 
 export default function Select({list,setSelected ,title}:SelectProps) {
+
+    
 
     const [s, setS] = useState<string[]>([]);
     
@@ -19,7 +21,7 @@ export default function Select({list,setSelected ,title}:SelectProps) {
     }
 
     return(
-        <div className="flex flex-col  border-2 border-black p-4 m-4 rounded-lg  ">
+        <div className="flex flex-col bg-gradient-to-tl from-sky-600 to-sky-900  border-2 border-black p-4 m-4 rounded-lg  ">
             <h1 className="text-2xl p-3">{title}</h1>
             {list.map((item,index)=>
                 (<div key={index} className="flex flex-row items-center p-2">

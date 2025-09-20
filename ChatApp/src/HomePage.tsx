@@ -1,5 +1,5 @@
 import {jwtDecode} from 'jwt-decode';
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, use } from "react";
 import type {Chat, Server, Message} from './type.d';
 import { useNavigate } from "react-router-dom";
 import { Client } from '@stomp/stompjs';
@@ -19,6 +19,7 @@ export default function HomePage() {
     const [servers, setServers] =useState<Server[]>([]);
     const [serverSellected, setServerSelected] = useState<Server>();
     const [newServerName, setNewServerName] = useState("");
+    const [is_public, setIs_public] = useState(true);
     //chats
     const [chats, setChats] = useState<Chat[]>([]);
     const [newChatName, setNewChatName] = useState("");
@@ -100,7 +101,6 @@ export default function HomePage() {
         webSocketFactory: () => socket,
         reconnectDelay: 5000,
         onConnect: () => {
-            console.log("✅ Connected to WebSocket");
 
             // Subscribe to all chats of the user once connected
             chats.forEach(chat => {
@@ -164,7 +164,8 @@ export default function HomePage() {
         const s: Server = {
             id: 0,
             name: servername,
-            ownerUsername: un
+            ownerUsername: un,
+            is_public: is_public,
         };
         
 
@@ -302,6 +303,10 @@ export default function HomePage() {
         }
     };
 
+    const isPublicChange = () => {
+        setIs_public(!is_public);
+    }
+
   return (
     <>
         <div className='grid grid-rows-[1fr_13fr]  w-auto h-screen   overflow-hidden m-0 p-0' >
@@ -317,7 +322,7 @@ export default function HomePage() {
             <section className='grid grid-cols-[1fr_1fr_6fr]'>
                 <div className='flex-grow text-white text-2xl border-r-2 border-white bg-gray-900 overflow-hidden p-1'>
                     <section className='p-2'>
-                        <h3 className='flex justify-between'>Servers <button className='hover:text-emerald-600 cursor-pointer ' onClick={()=> setAddServerState(true)}>+</button></h3>
+                        <h3 className='flex justify-between'>Servers <button className='hover:text-emerald-600 cursor-pointer ' onClick={()=> {setIs_public(true);setAddServerState(true)}}>+</button></h3>
                         
                         <ul className='list-none p-2'>
                             {servers.map((server) => (
@@ -367,7 +372,11 @@ export default function HomePage() {
                     <div className='fixed top-0 left-0 w-full h-full bg-gray-900/80 flex justify-center items-center text-white'>
                         <div className='bg-gradient-to-tl from-sky-600 to-sky-900 p-4 rounded-lg'>
                             <h2 className='text-xl mb-4'>Add Server</h2>
-                            <input type="text" value={newServerName} onChange={(e) => setNewServerName(e.target.value)} placeholder="Server Name" className='border p-2 rounded w-full mb-4' />
+                            <input type="text" value={newServerName} onChange={(e) => setNewServerName(e.target.value)} placeholder="Server Name" className='border p-2 rounded w-100 mb-4 ' />
+                            <div className='mb-4'>
+                                <input className="m-2 " type="checkbox" id="{item}" onClick={isPublicChange} />
+                                <label className="text-lg   cursor-pointer" htmlFor="{item}"> Private </label>
+                            </div>
                             <button onClick={() => createServer(newServerName, username)} className='bg-blue-500 text-white p-2 rounded'>Create Server</button>
                             <button onClick={() => setAddServerState(false)} className='ml-2 bg-red-500 text-white p-2 rounded'>Close</button>
                         </div>

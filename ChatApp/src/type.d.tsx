@@ -21,6 +21,7 @@ export interface Server{
     id: number; 
     name: string;
     ownerUsername: string;
+    is_public: boolean;
 }
 
 export interface Message{
