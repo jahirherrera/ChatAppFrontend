@@ -63,6 +63,7 @@ export default function HomePage() {
             
         }).then((data) => {
             setServers(data);
+            console.log(data);
             if (data.length === 0) {
                 console.log("WELCOME");
                 return;
@@ -181,12 +182,11 @@ export default function HomePage() {
             if (!response.ok) {
                 throw new Error("Failed to create server");
             }
-            alert("Server created successfully!");
             getEverything();
             setNewServerName("");
             setAddServerState(false)
         }catch(error){
-            console.error("Error creating server:", error);
+            alert(`Error creating server: ${error}`);
         }
 
     }   
@@ -320,12 +320,21 @@ export default function HomePage() {
                 </div>
             </section>
             <section className='grid grid-cols-[1fr_1fr_6fr]'>
-                <div className='flex-grow text-white text-2xl border-r-2 border-white bg-gray-900 overflow-hidden p-1'>
-                    <section className='p-2'>
-                        <h3 className='flex justify-between'>Servers <button className='hover:text-emerald-600 cursor-pointer ' onClick={()=> {setIs_public(true);setAddServerState(true)}}>+</button></h3>
+                <div className='grid grid-rows-[1fr_1fr] text-white text-2xl border-r-2 border-white bg-gray-900 overflow-hidden p-1'>
+                    <section className='p-2 '>
+                        <h3 className='flex justify-between '>Public Servers <button className='hover:text-emerald-600 cursor-pointer ' onClick={()=> {setIs_public(true);setAddServerState(true)}}>+</button></h3>
+                        
+                        <ul className='list-none p-1'>
+                            {servers.filter(s => s.is_Public).map((server) => (
+                                <li key={server.id} className=' hover:text-emerald-600 cursor-pointer' onClick={()=>setServerSelected(server)}> {server.name} </li>
+                            ))}
+                        </ul>
+                    </section>
+                    <section className='p-1 border-t-2 border-white'>
+                        <h3 className='flex justify-between'>Private Servers <button className='hover:text-emerald-600 cursor-pointer ' onClick={()=> {setIs_public(true);setAddServerState(true)}}>+</button></h3>
                         
                         <ul className='list-none p-2'>
-                            {servers.map((server) => (
+                            {servers.filter(s => !s.is_Public).map((server) => (
                                 <li key={server.id} className=' hover:text-emerald-600 cursor-pointer' onClick={()=>setServerSelected(server)}> {server.name} </li>
                             ))}
                         </ul>

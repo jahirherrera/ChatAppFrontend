@@ -1,11 +1,12 @@
-import type {User} from "../type.d.tsx";
+import type {User,LastPageProps} from "../type.d.tsx";
 import React, {useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 
-export default function LastPage() {
+export default function LastPage({technologies}:LastPageProps) {
 
     const navigate = useNavigate();
+
         
     const [fullname, setFullname] = useState<string>("");
     const [username, setUsername] = useState<string>("");
@@ -16,11 +17,13 @@ export default function LastPage() {
         fullname: fullname,
         username: username,
         password: password,
-        isExpired: isExpired
+        isExpired: isExpired,
+        technologies: technologies
     };
 
 
     const addUser = async (u: User) => {
+        
         try {
             const response = await fetch("http://localhost:8080/addUser", {
                 method: "POST",

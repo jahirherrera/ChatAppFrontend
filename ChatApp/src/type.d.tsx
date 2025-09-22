@@ -8,6 +8,7 @@ export interface User{
     username: string;
     password: string;
     isExpired: boolean;
+    technologies: string[];
 }
 
 
@@ -21,7 +22,7 @@ export interface Server{
     id: number; 
     name: string;
     ownerUsername: string;
-    is_public: boolean;
+    is_Public: boolean;
 }
 
 export interface Message{
@@ -39,4 +40,7 @@ export interface SelectProps {
   setSelected : React.Dispatch<React.SetStateAction<string[]>>        
 }
 
+export interface LastPageProps {
+    technologies: string[]
+}
 

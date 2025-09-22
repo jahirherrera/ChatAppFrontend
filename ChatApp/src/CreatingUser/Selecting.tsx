@@ -1,4 +1,4 @@
-import React, { useState, useEffect, use } from "react";
+import { useState, useEffect } from "react";
 import type {SelectProps} from "../type.d.tsx";
 
 export default function Select({list,setSelected ,title}:SelectProps) {
@@ -9,6 +9,7 @@ export default function Select({list,setSelected ,title}:SelectProps) {
     
 
     useEffect(()=>{
+        console.log(s);
         setSelected(s);
     }, [s]);
 
