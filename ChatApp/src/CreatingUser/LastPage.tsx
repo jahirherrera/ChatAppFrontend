@@ -1,4 +1,4 @@
-import type {User,LastPageProps} from "../type.d.tsx";
+import type {User,LastPageProps} from "../type.d.ts";
 import React, {useState } from "react";
 import { useNavigate } from "react-router-dom";
 

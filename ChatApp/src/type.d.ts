@@ -44,3 +44,22 @@ export interface LastPageProps {
     technologies: string[]
 }
 
+export interface ServerBarProps{
+    servers: Server[];
+    ispublic : boolean;
+    globalServer: React.Dispatch<React.SetStateAction<Server | undefined>>;
+    getEverything: () => void;
+}
+
+export interface windowOptionProps{
+    X: number;
+    Y: number;
+    addServer: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+export interface windowOptionSProps{
+    X: number;
+    Y: number;
+    addChat: React.Dispatch<React.SetStateAction<boolean>>;
+    deteleServer: () => void;
+}

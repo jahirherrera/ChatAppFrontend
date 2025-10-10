@@ -9,7 +9,6 @@ export default function Select({list,setSelected ,title}:SelectProps) {
     
 
     useEffect(()=>{
-        console.log(s);
         setSelected(s);
     }, [s]);
 
