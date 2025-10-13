@@ -1,14 +1,17 @@
 
-import type { ServerBarProps, Server, Chat } from '../type';
+import type { ServerBarProps, Server, Chat, deleteAdd } from '../type';
 import { useEffect, useState } from 'react';
 import WOptionS from './wOptionS';
 import ServerMember from './serverMember';
+import { jwtDecode } from 'jwt-decode';
 
 
 
 export default function ServerBar({ servers, ispublic, globalServer, getEverything, sGlobalText }: ServerBarProps) {
 
     const token: string = localStorage.getItem("authToken") || "";
+    const decode: any = jwtDecode(token);
+    const username: string = decode.sub;
 
     const [menu, setMenu] = useState({ visible: false, x: 0, y: 0 });
 
@@ -79,15 +82,15 @@ export default function ServerBar({ servers, ispublic, globalServer, getEverythi
         }
     }
 
-    
+
     const deleteServer = async (serverId: number) => {
         try {
-            const response = await fetch(`http://localhost:8080/deleteServer/${serverId}`, { 
+            const response = await fetch(`http://localhost:8080/deleteServer/${serverId}`, {
                 method: "DELETE",
                 headers: {
                     "Authorization": "Bearer " + token,
                 },
-            }); 
+            });
             if (!response.ok) {
                 throw new Error("Failed to delete server");
             }
@@ -98,6 +101,39 @@ export default function ServerBar({ servers, ispublic, globalServer, getEverythi
         }
     }
 
+    const leaveServer = async () => {
+
+        if (!serverRightClick) return;
+
+        const UserData: deleteAdd = {
+            id_server: serverRightClick?.id,
+            owner: "",
+            user: username,
+        }
+
+        try {
+            const response = await fetch("http://localhost:8080/leavingServer", {
+                method: "POST",
+                headers: {
+                    "Authorization": "Bearer " + token,
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(UserData)
+
+            })
+            if (!response.ok) {
+                throw new Error("Failed to delete user to server");
+            }
+
+            getEverything();
+
+        } catch (e) {
+            console.log(e);
+        }
+    }
+
+
+
 
     return (
         <>
@@ -105,7 +141,7 @@ export default function ServerBar({ servers, ispublic, globalServer, getEverythi
                 {servers.filter(s => s.is_Public === ispublic).map((server) => (
                     <li key={server.id} onContextMenu={(e) => prevendefault(e, server)} className={` ${selected(server)}   rounded-2xl cursor-pointer pl-4 m-1 transition-colors duration-500 hover:bg-[#36393f]`} onClick={() => setServerSelected(server)}> {server.name} </li>
                 ))}
-                {menu.visible && <WOptionS X={menu.x} Y={menu.y} addChat={setAddChatState} deteleServer={()=>{if(serverRightClick) deleteServer(serverRightClick?.id)}} addUsertoServer={setAddDeleteUsertoServerState} adding={setAddingUser} ></WOptionS>}
+                {menu.visible && <WOptionS X={menu.x} Y={menu.y} leaveServer={leaveServer} addChat={setAddChatState} deteleServer={() => { if (serverRightClick) deleteServer(serverRightClick?.id) }} addUsertoServer={setAddDeleteUsertoServerState} adding={setAddingUser} owner={serverRightClick ? serverRightClick?.ownerUsername : ""}  ></WOptionS>}
             </ul>
             {
                 addChatState && (
@@ -123,6 +159,7 @@ export default function ServerBar({ servers, ispublic, globalServer, getEverythi
             {
                 addDeleteUsertoServerState && <ServerMember adding={addingUser} idServer={serverRightClick ? serverRightClick.id : 0} addUsertoServer={setAddDeleteUsertoServerState} sGlobalText={sGlobalText}></ServerMember>
             }
+
         </>
     )
 }

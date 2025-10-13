@@ -61,10 +61,12 @@ export interface windowOptionProps{
 export interface windowOptionSProps{
     X: number;
     Y: number;
+    owner:string;
     addChat: React.Dispatch<React.SetStateAction<boolean>>;
     addUsertoServer: React.Dispatch<React.SetStateAction<boolean>>;
     adding: React.Dispatch<React.SetStateAction<boolean>>;
     deteleServer: () => void;
+    leaveServer : ()=>void;
 }
 
 export interface AddUserToServerProps{

@@ -5,6 +5,7 @@ import { useEffect, useState } from "react"
 export default function ServerMember({ adding, idServer, addUsertoServer,sGlobalText }: AddUserToServerProps) {
 
     const [typingUsername, setTypingUsername] = useState<string>("");
+    
     const [or, setOr] = useState<string>("");
 
     useEffect(() => {

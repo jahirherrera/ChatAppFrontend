@@ -75,7 +75,6 @@ export default function HomePage() {
         }).then((data) => {
             setServers(data);
             if (data.length === 0) {
-                console.log("WELCOME");
                 return;
             }
         }).catch((error) => {
@@ -94,11 +93,9 @@ export default function HomePage() {
                 throw new Error("Network response was not ok");
             }
             return response.json();
-            console.log(response);
         }).then((data) => {
             setChats(data);
             if (data.length === 0) {
-                console.log("WELCOME");
                 return;
             }
         }).catch((error) => {
@@ -202,42 +199,6 @@ export default function HomePage() {
 
 
     }
-
-
-    // const createChat = async (chatname: string, serverId: number) => {
-
-
-    //     if (chatname.trim() === "") {
-    //         alert("Chat name cannot be empty.");
-    //         return;
-    //     }
-    //     const newchat: Chat = {
-    //         id: 0,
-    //         name: chatname,
-    //         server_id: serverId
-    //     }
-
-    //     try {
-
-    //         const response = await fetch("http://localhost:8080/addChat", {
-    //             method: "POST",
-    //             headers: {
-    //                 "Authorization": "Bearer " + token,
-    //                 "Content-Type": "application/json"
-    //             },
-    //             body: JSON.stringify(newchat)
-    //         });
-    //         if (!response.ok) {
-    //             throw new Error("Failed to create chat");
-    //         }
-    //         console.log("Chat created successfully");
-    //         getEverything();
-    //         setNewChatName("");
-    //         setAddChatState(false)
-    //     } catch (error) {
-    //         console.error("Error creating chat:", error);
-    //     }
-    // }
 
 
     function logout() {
@@ -438,7 +399,7 @@ export default function HomePage() {
                     )
                 }
                 {
-                    show && <DisappearingDiv text={globalText} />
+                    show && <DisappearingDiv key={globalText} text={globalText} />
                 }
 
             </div>
