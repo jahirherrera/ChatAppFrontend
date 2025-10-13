@@ -1,11 +1,12 @@
 
-import type { ServerBarProps, Server, Chat } from './type.d';
+import type { ServerBarProps, Server, Chat } from '../type';
 import { useEffect, useState } from 'react';
 import WOptionS from './wOptionS';
+import ServerMember from './serverMember';
 
 
 
-export default function ServerBar({ servers, ispublic, globalServer, getEverything }: ServerBarProps) {
+export default function ServerBar({ servers, ispublic, globalServer, getEverything, sGlobalText }: ServerBarProps) {
 
     const token: string = localStorage.getItem("authToken") || "";
 
@@ -16,6 +17,9 @@ export default function ServerBar({ servers, ispublic, globalServer, getEverythi
 
     const [addChatState, setAddChatState] = useState(false);
     const [newChatName, setNewChatName] = useState("");
+
+    const [addDeleteUsertoServerState, setAddDeleteUsertoServerState] = useState(false);
+    const [addingUser, setAddingUser] = useState(false);
 
 
     function setServerSelected(server: Server) {
@@ -78,7 +82,7 @@ export default function ServerBar({ servers, ispublic, globalServer, getEverythi
     
     const deleteServer = async (serverId: number) => {
         try {
-            const response = await fetch(`http://localhost:8080/deleteServer/${serverId}`, {
+            const response = await fetch(`http://localhost:8080/deleteServer/${serverId}`, { 
                 method: "DELETE",
                 headers: {
                     "Authorization": "Bearer " + token,
@@ -101,7 +105,7 @@ export default function ServerBar({ servers, ispublic, globalServer, getEverythi
                 {servers.filter(s => s.is_Public === ispublic).map((server) => (
                     <li key={server.id} onContextMenu={(e) => prevendefault(e, server)} className={` ${selected(server)}   rounded-2xl cursor-pointer pl-4 m-1 transition-colors duration-500 hover:bg-[#36393f]`} onClick={() => setServerSelected(server)}> {server.name} </li>
                 ))}
-                {menu.visible && <WOptionS X={menu.x} Y={menu.y} addChat={setAddChatState} deteleServer={()=>{if(serverRightClick) deleteServer(serverRightClick?.id)}}></WOptionS>}
+                {menu.visible && <WOptionS X={menu.x} Y={menu.y} addChat={setAddChatState} deteleServer={()=>{if(serverRightClick) deleteServer(serverRightClick?.id)}} addUsertoServer={setAddDeleteUsertoServerState} adding={setAddingUser} ></WOptionS>}
             </ul>
             {
                 addChatState && (
@@ -115,6 +119,9 @@ export default function ServerBar({ servers, ispublic, globalServer, getEverythi
                     </div>
 
                 )
+            }
+            {
+                addDeleteUsertoServerState && <ServerMember adding={addingUser} idServer={serverRightClick ? serverRightClick.id : 0} addUsertoServer={setAddDeleteUsertoServerState} sGlobalText={sGlobalText}></ServerMember>
             }
         </>
     )

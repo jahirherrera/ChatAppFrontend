@@ -1,14 +1,15 @@
 import { jwtDecode } from 'jwt-decode';
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, use } from "react";
 import type { Chat, Server, Message } from './type.d';
 import { useNavigate } from "react-router-dom";
 import { Client } from '@stomp/stompjs';
-import ServerBar from './ServerLIst';
+import ServerBar from './serverOptions/ServerLIst';
 //@ts-ignore
 import SockJS from 'sockjs-client/dist/sockjs'
 //@ts-ignore
 import sprite from './assets/sprite.svg';
 import WindowOption from './windowOption';
+import DisappearingDiv from './disapearDiv';
 
 
 export default function HomePage() {
@@ -20,7 +21,6 @@ export default function HomePage() {
     const username: string = decode.sub;
     //servers
     const [servers, setServers] = useState<Server[]>([]);
-    const [serverSellected, setServerSelected] = useState<Server | undefined>();
     const [serverClicked, setServerClicked] = useState<Server | undefined>();
     const [newServerName, setNewServerName] = useState("");
     const [is_public, setIs_public] = useState(true);
@@ -35,6 +35,10 @@ export default function HomePage() {
 
     //WebSocket
     const [stompClient, setStompClient] = useState<Client | null>(null);
+
+    //Little window of changes
+    const [globalText, setGlobalText] = useState<string>("");
+    const [show, setShow] = useState<boolean>(false);
 
     //Menu
     const [menu, setMenu] = useState<{ visible: boolean; x: number; y: number }>({
@@ -195,6 +199,8 @@ export default function HomePage() {
             alert(`Error creating server: ${error}`);
         }
 
+
+
     }
 
 
@@ -233,8 +239,6 @@ export default function HomePage() {
     //     }
     // }
 
-    const deleteServer = async (serverId: number) => {
-    }
 
     function logout() {
         localStorage.removeItem("authToken");
@@ -331,6 +335,13 @@ export default function HomePage() {
         setMenu({ visible: true, x: e.pageX, y: e.pageY });
     }
 
+    useEffect(() => {
+
+        if (globalText !== "" ) {
+            setShow(true);
+        }
+    }, [globalText])
+
 
 
     return (
@@ -354,11 +365,11 @@ export default function HomePage() {
                     <div className='grid grid-rows-[1fr_1fr] text-white text-xl  bg-[#292b2f] overflow-hidden p-1'>
                         <section className='p-2 '>
                             <h3 className='flex justify-between ' onContextMenu={(e) => prevendefault(e)} >PUBLIC SERVERS </h3>
-                            <ServerBar servers={servers}   ispublic={true} globalServer={setServerClicked} getEverything={getEverything}/>
+                            <ServerBar servers={servers} ispublic={true} globalServer={setServerClicked} getEverything={getEverything} sGlobalText={setGlobalText} />
                         </section>
                         <section className='p-1 '>
                             <h3 className='flex justify-between' onContextMenu={(e) => prevendefault(e)}>PRIVATES SERVES </h3>
-                            <ServerBar servers={servers}   ispublic={false} globalServer={setServerClicked} getEverything={getEverything}/>
+                            <ServerBar servers={servers} ispublic={false} globalServer={setServerClicked} getEverything={getEverything} sGlobalText={setGlobalText} />
                         </section>
                     </div>
                     <div className='flex-grow text-white text-2xl overflow-hidden bg-[#36393f] p-2'>
@@ -409,10 +420,10 @@ export default function HomePage() {
                         </svg>
                     </div>
                 </footer>
-                {menu.visible && <WindowOption X={menu.x} Y={menu.y} addServer={setAddServerState}/>}
+                {menu.visible && <WindowOption X={menu.x} Y={menu.y} addServer={setAddServerState} />}
                 {
                     addServerState && (
-                        <div className='fixed top-0 left-0 w-full h-full bg-gray-900/80 flex justify-center items-center text-white'>
+                        <div className='fixed top-0 left-0 w-full h-full bg-gray-900/80 flex justify-center items-center text-white '>
                             <div className='bg-gradient-to-tl from-sky-600 to-sky-900 p-4 rounded-lg'>
                                 <h2 className='text-xl mb-4'>Add Server</h2>
                                 <input type="text" value={newServerName} onChange={(e) => setNewServerName(e.target.value)} placeholder="Server Name" className='border p-2 rounded w-100 mb-4 ' />
@@ -426,7 +437,10 @@ export default function HomePage() {
                         </div>
                     )
                 }
-                
+                {
+                    show && <DisappearingDiv text={globalText} />
+                }
+
             </div>
 
         </>

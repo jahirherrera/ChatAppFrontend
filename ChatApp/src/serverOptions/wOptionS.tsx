@@ -1,8 +1,8 @@
-import type { windowOptionSProps } from "./type";
+import type { windowOptionSProps } from "../type";
 
 
 
-export default function WOptionS({ X, Y, addChat, deteleServer }: windowOptionSProps) {
+export default function WOptionS({ X, Y, addChat, deteleServer, addUsertoServer,adding }: windowOptionSProps) {
 
     function createServer() {
         addChat(true);
@@ -12,6 +12,16 @@ export default function WOptionS({ X, Y, addChat, deteleServer }: windowOptionSP
         deteleServer();
     }
 
+    function addUser(){
+        addUsertoServer(true);
+        adding(true);
+    }
+
+    function DeleteUser(){
+        addUsertoServer(true);
+        adding(false);
+    }
+
 
     return (
         <>
@@ -19,8 +29,8 @@ export default function WOptionS({ X, Y, addChat, deteleServer }: windowOptionSP
                 <ul>
                     <button className="hover:bg-gray-600 p-1 cursor-pointer rounded-lg w-full " onClick={createServer}>Create Chat</button>
                     <p className="border mt-2 mb-2 border-[#404246]"></p>
-                    <button className="hover:bg-gray-600 p-1 cursor-pointer rounded-lg w-full ">Add User</button>
-                    <button className="hover:bg-gray-600 p-1 cursor-pointer rounded-lg w-full ">Delete User</button>
+                    <button className="hover:bg-gray-600 p-1 cursor-pointer rounded-lg w-full " onClick={addUser}> Add User</button>
+                    <button className="hover:bg-gray-600 p-1 cursor-pointer rounded-lg w-full " onClick={ DeleteUser}>Delete User</button>
                     <p className="border mt-2 mb-2 border-[#404246]"></p>
                     <button className="hover:bg-gray-600 p-1 cursor-pointer rounded-lg w-full text-red-600" onClick={deleteS}> Delete Server</button>
                     

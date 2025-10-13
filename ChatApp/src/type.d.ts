@@ -49,6 +49,7 @@ export interface ServerBarProps{
     ispublic : boolean;
     globalServer: React.Dispatch<React.SetStateAction<Server | undefined>>;
     getEverything: () => void;
+    sGlobalText : React.Dispatch<React.SetStateAction<string>>;
 }
 
 export interface windowOptionProps{
@@ -61,5 +62,20 @@ export interface windowOptionSProps{
     X: number;
     Y: number;
     addChat: React.Dispatch<React.SetStateAction<boolean>>;
+    addUsertoServer: React.Dispatch<React.SetStateAction<boolean>>;
+    adding: React.Dispatch<React.SetStateAction<boolean>>;
     deteleServer: () => void;
+}
+
+export interface AddUserToServerProps{
+    adding: boolean;
+    idServer: number;
+    addUsertoServer: React.Dispatch<React.SetStateAction<boolean>>;
+    sGlobalText : React.Dispatch<React.SetStateAction<string>>;
+}
+
+export interface deleteAdd{
+    id_server: number;
+    owner:string
+    user: string;
 }
