@@ -65,6 +65,7 @@ export interface windowOptionSProps{
     addChat: React.Dispatch<React.SetStateAction<boolean>>;
     addUsertoServer: React.Dispatch<React.SetStateAction<boolean>>;
     adding: React.Dispatch<React.SetStateAction<boolean>>;
+    showmode : React.Dispatch<React.SetStateAction<boolean>>;
     deteleServer: () => void;
     leaveServer : ()=>void;
 }
@@ -80,4 +81,9 @@ export interface deleteAdd{
     id_server: number;
     owner:string
     user: string;
+}
+
+export interface showMode{
+    server_id : number;
+    showing:React.Dispatch<React.SetStateAction<boolean>>;
 }

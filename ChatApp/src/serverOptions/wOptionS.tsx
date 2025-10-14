@@ -4,7 +4,7 @@ import { jwtDecode } from "jwt-decode";
 
 
 
-export default function WOptionS({ X, Y, addChat, deteleServer, addUsertoServer, adding, owner,leaveServer }: windowOptionSProps) {
+export default function WOptionS({ X, Y, addChat, deteleServer, addUsertoServer, adding, owner,leaveServer, showmode }: windowOptionSProps) {
     const token: string = localStorage.getItem("authToken") || "";
     const decode: any = jwtDecode(token);
     const username: string = decode.sub;
@@ -49,7 +49,7 @@ export default function WOptionS({ X, Y, addChat, deteleServer, addUsertoServer,
                     <ul>
                         <button className="hover:bg-gray-600 p-1 cursor-pointer rounded-lg w-full " onClick={createServer}>Create Chat</button>
                         <p className="border mt-2 mb-2 border-[#404246]"></p>
-                        <button className="hover:bg-gray-600 p-1 cursor-pointer rounded-lg w-full " > View Moderators</button>
+                        <button className="hover:bg-gray-600 p-1 cursor-pointer rounded-lg w-full " onClick={()=>showmode(true)}> View Moderators</button>
                         <button className="hover:bg-gray-600 p-1 cursor-pointer rounded-lg w-full " onClick={addUser}> Add User</button>
                         <button className="hover:bg-gray-600 p-1 cursor-pointer rounded-lg w-full " onClick={DeleteUser}>Delete User</button>
                         <p className="border mt-2 mb-2 border-[#404246]"></p>

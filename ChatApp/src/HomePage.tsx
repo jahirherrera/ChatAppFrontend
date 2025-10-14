@@ -240,6 +240,8 @@ export default function HomePage() {
 
         setMessageContent("");
 
+        console.log(message);
+
         const response = await fetch(`http://localhost:8080/saveMessage`, {
             method: "POST",
             headers: {
@@ -255,6 +257,7 @@ export default function HomePage() {
         }
 
         const data = await response.json();
+        console.log(data);
 
 
 

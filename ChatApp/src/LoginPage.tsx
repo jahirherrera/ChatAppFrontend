@@ -1,6 +1,8 @@
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import type { UserLogin } from "./type.d.tsx";
+//@ts-ignore
+import sprite from './assets/sprite.svg';
 
 
 export default function HomePage() {
@@ -60,17 +62,42 @@ export default function HomePage() {
 
         <div className=" flex flex-col justify-center items-center gap-4 p-6">
           <input className='border border-white rounded-md px-3 py-2  w-100  text-white' placeholder="Username" name="username" id="username" value={username} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setUsername(e.target.value)} onKeyDown={enterLogin}></input>
-          <input className='border border-white rounded-md px-3 py-2  w-100 text-white' name="password" placeholder="Password" id="password" type="password" value={password} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)} onKeyDown={enterLogin}></input>
-          <button className='p-2  rounded-lg text-white w-40 cursor-pointer shadow-xl bg-blue-500' onClick={() => { Login(username, password) }}>
-            Login
-          </button>
-          <button className='p-2 text-white  rounded-lg   cursor-pointer shadow-xl bg-blue-500' onClick={() => { navigate("/CreateUser") }}>
-            Register
-          </button>
+          <div>
+            <input className='border border-white rounded-md px-3 py-2  w-100 text-white' name="password" placeholder="Password" id="password" type="password" value={password} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)} onKeyDown={enterLogin}></input>
+            <div className='p-1 text-blue-600    cursor-pointer text-xs flex justify-start items-start w-100'>
+              Forgot Password?
+            </div>
+          </div>
+          <div className="flex flex-col justify-center items-center">
+            <button className='p-2  rounded-lg text-white w-40 cursor-pointer shadow-xl bg-blue-500' onClick={() => { Login(username, password) }}>
+              Login
+            </button>
+            <button className='p-2 text-blue-600    cursor-pointer text-xs flex ' onClick={() => { navigate("/CreateUser") }}>
+              New here? <p className="underline pl-1">Create an account</p>
+            </button>
+          </div>
+
         </div>
 
         <div>
-          <p className="text-white">---- Sign in with ----</p>
+          <div className="text-white flex justify-center items-center mb-3">
+            <p className="border border-white w-10 h-0"></p>
+            <p className="p-1">Sign in with</p>
+            <p className="border border-white w-10 h-0"> </p>
+          </div>
+          <div>
+            <div className='flex justify-around w-40 items-center mt-2'>
+              <svg width="28" height="28" className="hover:cursor-pointer">
+                <use href={`${sprite}#gitlogin`} />
+              </svg>
+              <svg width="19" height="19" className="hover:cursor-pointer">
+                <use href={`${sprite}#x`} />
+              </svg>
+              <svg width="26" height="26" className="hover:cursor-pointer">
+                <use href={`${sprite}#google`} />
+              </svg>
+            </div>
+          </div>
         </div>
       </section>
     </div>

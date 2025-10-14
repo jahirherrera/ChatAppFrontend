@@ -1,3 +1,4 @@
+//@ts-ignore
 import './App.css';
 import {BrowserRouter, Routes, Route} from 'react-router-dom'
 import LoginPage from './LoginPage';

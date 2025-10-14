@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import WOptionS from './wOptionS';
 import ServerMember from './serverMember';
 import { jwtDecode } from 'jwt-decode';
+import ShowModerators from './showMode';
 
 
 
@@ -23,6 +24,8 @@ export default function ServerBar({ servers, ispublic, globalServer, getEverythi
 
     const [addDeleteUsertoServerState, setAddDeleteUsertoServerState] = useState(false);
     const [addingUser, setAddingUser] = useState(false);
+
+    const [showMode, setShowMode] = useState(false);
 
 
     function setServerSelected(server: Server) {
@@ -141,7 +144,7 @@ export default function ServerBar({ servers, ispublic, globalServer, getEverythi
                 {servers.filter(s => s.is_Public === ispublic).map((server) => (
                     <li key={server.id} onContextMenu={(e) => prevendefault(e, server)} className={` ${selected(server)}   rounded-2xl cursor-pointer pl-4 m-1 transition-colors duration-500 hover:bg-[#36393f]`} onClick={() => setServerSelected(server)}> {server.name} </li>
                 ))}
-                {menu.visible && <WOptionS X={menu.x} Y={menu.y} leaveServer={leaveServer} addChat={setAddChatState} deteleServer={() => { if (serverRightClick) deleteServer(serverRightClick?.id) }} addUsertoServer={setAddDeleteUsertoServerState} adding={setAddingUser} owner={serverRightClick ? serverRightClick?.ownerUsername : ""}  ></WOptionS>}
+                {menu.visible && <WOptionS X={menu.x} Y={menu.y} leaveServer={leaveServer} addChat={setAddChatState} deteleServer={() => { if (serverRightClick) deleteServer(serverRightClick?.id) } } addUsertoServer={setAddDeleteUsertoServerState} adding={setAddingUser} owner={serverRightClick ? serverRightClick?.ownerUsername : ""}  showmode={setShowMode}></WOptionS>}
             </ul>
             {
                 addChatState && (
@@ -159,7 +162,7 @@ export default function ServerBar({ servers, ispublic, globalServer, getEverythi
             {
                 addDeleteUsertoServerState && <ServerMember adding={addingUser} idServer={serverRightClick ? serverRightClick.id : 0} addUsertoServer={setAddDeleteUsertoServerState} sGlobalText={sGlobalText}></ServerMember>
             }
-
+            {showMode && <ShowModerators showing={setShowMode} server_id={serverRightClick ? serverRightClick.id : 0}/>}
         </>
     )
 }
