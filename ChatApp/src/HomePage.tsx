@@ -1,5 +1,5 @@
 import { jwtDecode } from 'jwt-decode';
-import React, { useState, useEffect, use } from "react";
+import React, { useState, useEffect } from "react";
 import type { Chat, Server, Message } from './type.d';
 import { useNavigate } from "react-router-dom";
 import { Client } from '@stomp/stompjs';
@@ -10,6 +10,7 @@ import SockJS from 'sockjs-client/dist/sockjs'
 import sprite from './assets/sprite.svg';
 import WindowOption from './windowOption';
 import DisappearingDiv from './disapearDiv';
+import MessageList from './MessagesOptions/messagesList';
 
 
 export default function HomePage() {
@@ -310,7 +311,7 @@ export default function HomePage() {
 
     return (
         <>
-            <div className='grid grid-rows-[1fr_19fr_1fr]  w-full h-screen font-  m-0 p-0' >
+            <div className='grid grid-rows-[1fr_19fr_1fr]  w-full h-screen  m-0 p-0' >
                 <header className='grid grid-cols-[2fr_14fr] border-b text-sm border-[#36393f] bg-[#292b2f] p-1'>
                     <div className=' text-white text-2xl flex justify-center items-center p-1 '>
                         <p className='italic'>Byte</p>Talking
@@ -349,20 +350,7 @@ export default function HomePage() {
                     </div>
                     <div className='grid grid-rows-[24fr_2fr]   bg-[#292b2f] '>
 
-                        <div className='text-white text-2xl overflow-y-scroll flex flex-col-reverse scrollbar-bg max-h-190'>
-                            <ul className='p-2 flex flex-col m-0'>
-                                {
-                                    messagesFromChat.filter(message => message.chat_id === chatClicked?.id).map((m) => (
-                                        <li key={m.id} className='p-1 m-1 border-white '>
-                                            <div className='flex flex-col p-2'>
-                                                <span className='font-bold mb-2 text-2xl'>{m.sender_username} <span className='text-gray-500 text-lg'>{m.date}</span></span>
-                                                <span >{m.content}</span>
-                                            </div>
-                                        </li>
-                                    ))
-                                }
-                            </ul>
-                        </div>
+                        <MessageList messages={messagesFromChat.filter(message => message.chat_id === chatClicked?.id)}></MessageList>
 
                         <div className='text-white flex justify-between items-start p-2 '>
                             <input id='message' className='p-2  pl-4 rounded-2xl w-full bg-[#36393f]' value={messageContent} placeholder='Enter a message' onChange={(e: React.ChangeEvent<HTMLInputElement>) => setMessageContent(e.target.value)} onKeyDown={enterSendMessage}></input>

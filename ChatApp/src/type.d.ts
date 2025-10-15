@@ -87,3 +87,7 @@ export interface showMode{
     server_id : number;
     showing:React.Dispatch<React.SetStateAction<boolean>>;
 }
+
+export interface messageListProps{
+    messages : Message[];
+}

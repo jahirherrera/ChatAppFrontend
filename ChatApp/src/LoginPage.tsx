@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import type { UserLogin } from "./type.d.tsx";
 //@ts-ignore
 import sprite from './assets/sprite.svg';
@@ -9,6 +9,9 @@ export default function HomePage() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
+
+  const [visible, setVisible] = useState(false);
+  const [visibleString, setVisibleString] = useState("password");
 
   const Login = async (username: string, password: string) => {
     localStorage.removeItem("authToken");
@@ -50,6 +53,14 @@ export default function HomePage() {
     }
   }
 
+  function changeVisible() {
+    setVisible(!visible);
+  }
+
+  useEffect(() => {
+    visible ? setVisibleString("text") : setVisibleString("password");
+  }, [visible])
+
 
 
   return (
@@ -61,9 +72,22 @@ export default function HomePage() {
         </div>
 
         <div className=" flex flex-col justify-center items-center gap-4 p-6">
-          <input className='border border-white rounded-md px-3 py-2  w-100  text-white' placeholder="Username" name="username" id="username" value={username} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setUsername(e.target.value)} onKeyDown={enterLogin}></input>
+          <input className='border border-white rounded-md px-3 py-2  w-100  text-white'  placeholder="Username" name="username" id="username" value={username} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setUsername(e.target.value)} onKeyDown={enterLogin}></input>
           <div>
-            <input className='border border-white rounded-md px-3 py-2  w-100 text-white' name="password" placeholder="Password" id="password" type="password" value={password} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)} onKeyDown={enterLogin}></input>
+            <div className='border border-white rounded-md px-3 py-2  w-100 text-white flex justify-between items-center'>
+              <input name="password" placeholder="Password" id="password"  type={visibleString} value={password} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)} onKeyDown={enterLogin}></input>
+              <button onClick={changeVisible} className=" w-4 h-4 flex justify-center items-center">
+                {visible ?
+                  <svg width="24" height="24" className="hover:cursor-pointer">
+                    <use href={`${sprite}#notvisible`} />
+                  </svg> :
+                  <svg width="24" height="24" className="hover:cursor-pointer">
+                    <use href={`${sprite}#visible`} />
+                  </svg>
+                }
+              </button>
+            </div>
+
             <div className='p-1 text-blue-600    cursor-pointer text-xs flex justify-start items-start w-100'>
               Forgot Password?
             </div>
