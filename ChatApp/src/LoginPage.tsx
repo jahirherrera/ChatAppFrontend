@@ -72,19 +72,22 @@ export default function HomePage() {
         </div>
 
         <div className=" flex flex-col justify-center items-center gap-4 p-6">
-          <input className='border border-white rounded-md px-3 py-2  w-100  text-white'  placeholder="Username" name="username" id="username" value={username} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setUsername(e.target.value)} onKeyDown={enterLogin}></input>
+          <input className='border border-white rounded-md px-3 py-2  w-100  text-white focus:outline-none focus:ring-0' placeholder="Username" name="username" id="username" value={username} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setUsername(e.target.value)} onKeyDown={enterLogin}></input>
           <div>
             <div className='border border-white rounded-md px-3 py-2  w-100 text-white flex justify-between items-center'>
-              <input name="password" placeholder="Password" id="password"  type={visibleString} value={password} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)} onKeyDown={enterLogin}></input>
-              <button onClick={changeVisible} className=" w-4 h-4 flex justify-center items-center">
-                {visible ?
-                  <svg width="24" height="24" className="hover:cursor-pointer">
-                    <use href={`${sprite}#notvisible`} />
-                  </svg> :
-                  <svg width="24" height="24" className="hover:cursor-pointer">
-                    <use href={`${sprite}#visible`} />
-                  </svg>
-                }
+              <input className="bg-transparent outline-none focus:outline-none focus:ring-0 w-full text-white" name="password" placeholder="Password" id="password" type={visibleString} value={password} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)} onKeyDown={enterLogin}></input>
+              <button
+                onClick={changeVisible}
+                className="w-5 h-5 flex justify-center items-center bg-cover"
+              >
+                <svg
+                  className="w-5 h-5 text-white hover:cursor-pointer"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  strokeWidth="2"
+                >
+                  <use href={`${sprite}#${visible ? "notvisible" : "visible"}`} />
+                </svg>
               </button>
             </div>
 

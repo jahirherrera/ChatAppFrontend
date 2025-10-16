@@ -91,3 +91,8 @@ export interface showMode{
 export interface messageListProps{
     messages : Message[];
 }
+
+export interface windowMessagesProps{
+    X: number;
+    Y: number;
+}
