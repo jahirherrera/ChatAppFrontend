@@ -64,8 +64,8 @@ export default function HomePage() {
 
 
   return (
-    <div className="flex justify-center items-center w-screen h-screen bg-[url(./assets/bg.png)] bg-cover bg-center bg-no-repeat text-white">
-      <section className='flex flex-col items-center pt-6 border w-120 h-140 text-black rounded-2xl shadow-xl/40 m-4  backdrop-blur-[10px] '>
+    <div className="flex justify-center items-center w-screen h-screen bg-[url(./assets/bg.png)] bg-cover bg-center bg-no-repeat text-white ">
+      <section className='flex flex-col items-center pt-6 border w-120 h-140 text-black rounded-2xl shadow-xl/40 m-4  backdrop-blur-[10px] scale-120'>
         <div className="flex flex-col justify-center items-center m-5">
           <h2 className="text-3xl font-bold text-white flex"><p className="italic">Byte</p>Talk</h2>
           <p className="text-gray-300">Connect. Code. Colaborate</p>

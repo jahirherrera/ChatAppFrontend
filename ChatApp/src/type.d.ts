@@ -35,8 +35,6 @@ export interface Message{
 }
 
 export interface SelectProps {
-  list: string[];
-  title : string;
   setSelected : React.Dispatch<React.SetStateAction<string[]>>        
 }
 
@@ -116,4 +114,9 @@ export interface giveStars{
     amount : number,
     usernameFrom : string,
     usernameTo : string
+}
+
+export interface techs{
+    color : string;
+    name : string;
 }

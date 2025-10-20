@@ -37,8 +37,7 @@ export default function DisappearingDiv({ text }: DisappearingDivProps) {
     return (
 
         <div className={`fixed top-0 left-0 w-full h-full flex justify-center items-center text-white `} style={{ opacity: opacity / 100 }}>
-            <div className="w-full max-w-sm p-6 
-        bg-[#36393f] text-white rounded-xl shadow-2xl border border-gray-700 flex items-center justify-center text-center ">
+            <div className="w-full max-w-sm p-6 bg-[#36393f] text-white rounded-xl shadow-2xl border border-gray-700 flex items-center justify-center text-center ">
                 {text}
             </div>
         </div>

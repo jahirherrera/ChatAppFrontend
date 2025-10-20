@@ -1,13 +1,13 @@
-import type {User,LastPageProps} from "../type.d.ts";
-import React, {useState } from "react";
+import type { User, LastPageProps } from "../type.d.ts";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 
-export default function LastPage({technologies}:LastPageProps) {
+export default function LastPage({ technologies }: LastPageProps) {
 
     const navigate = useNavigate();
 
-        
+
     const [fullname, setFullname] = useState<string>("");
     const [username, setUsername] = useState<string>("");
     const [password, setPassword] = useState<string>("");
@@ -23,7 +23,7 @@ export default function LastPage({technologies}:LastPageProps) {
 
 
     const addUser = async (u: User) => {
-        
+
         try {
             const response = await fetch("http://localhost:8080/addUser", {
                 method: "POST",
@@ -54,30 +54,51 @@ export default function LastPage({technologies}:LastPageProps) {
     }
 
     return (
-        <div className="flex flex-row justify-center items-center  text-white">
-            <section className="flex flex-col justify-center  content-center items-center h-160 w-120 bg-gradient-to-tl from-sky-600 to-sky-900 border-r-1 border-white m-2">
-                <div className="flex flex-col items-start p-4">
-                    <div className="relative border-2 border-white p-2">
-                        <label htmlFor="fullname" className="absolute -top-5 left-3 bg-sky-800 px-1 text-white text-xl ">Full Name</label>
-                        <input className="bg-gray-900 border-2 border-white p-4 text-white w-80 text-xl outline-none" type="text" id="fullname" value={fullname} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setFullname(e.target.value)} />
+        <div className="flex justify-center items-center w-screen h-screen  text-white">
+            <section className='flex flex-col justify-around items-center pt-4 border w-140 h-160 border-black rounded-[60px] shadow-xl/60 m-4  backdrop-blur-[10px]'>
+
+                <div className="flex flex-col justify-center items-center ">
+                    <h2 className="text-3xl font-bold text-white flex"><p className="italic">Byte</p>Talk</h2>
+                    <p className="text-gray-300">Connect. Code. Colaborate</p>
+                </div>
+
+
+                <div className="flex flex-col justify-around h-66">
+                    <div className="flex flex-row justify-between items-center w-100">
+                        <p className="text-white text-lg">Full Name</p>
+                        <input type="text" id="fullname" placeholder="Jon Wick" className="text-white p-1 rounded border border-[#54585f] hover:border-[#00FFFF] focus:border focus:border-[#00FFFF] outline-none  transition-all duration-300" />
+                    </div>
+
+                    <div className="flex flex-row justify-between items-center w-100">
+                        <p className="text-white text-lg">Username</p>
+                        <input type="text" id="Username" placeholder="Username" className="text-white p-1 rounded border border-[#54585f] hover:border-[#00FFFF] focus:border focus:border-[#00FFFF] outline-none  transition-all duration-300" />
+                    </div>
+
+                    <div className="flex flex-row justify-between items-center w-100">
+                        <p className="text-white text-lg">Password</p>
+                        <input type="Password" id="password" placeholder="°°°°°°°°°°" className="text-white p-1 rounded border border-[#54585f] hover:border-[#00FFFF] focus:border focus:border-[#00FFFF] outline-none  transition-all duration-300" />
+                    </div>
+
+                    <div className="flex flex-row justify-between items-center w-100">
+                        <p className="text-white text-lg">Confirm Password</p>
+                        <input type="password" id="comfrimpassword" placeholder="°°°°°°°°°°" className="text-white p-1 rounded border border-[#54585f] hover:border-[#00FFFF] focus:border focus:border-[#00FFFF] outline-none  transition-all duration-300" />
+                    </div>
+
+                    <div className="flex flex-row justify-between items-center w-100">
+                        <p className="text-white text-lg">Email</p>
+                        <input type="email" id="email" placeholder="your.email@example.com" className="text-white p-1 rounded border border-[#54585f] hover:border-[#00FFFF] focus:border focus:border-[#00FFFF] outline-none  transition-all duration-300" />
                     </div>
                 </div>
-                <div className="flex flex-col items-start p-4">
-                    <div className="relative border-2 border-white p-2">
-                        <label htmlFor="username" className="absolute -top-5 left-3 bg-sky-800 px-1 text-white text-xl ">Username</label>
-                        <input className="bg-gray-900 border-2 border-white p-4 text-white w-80 text-xl outline-none" type="text" id="username" value={username} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setUsername(e.target.value)} />
-                    </div>
+
+
+                <div className="flex flex-col justify-center items-center m-2">
+                    <button className='p-2  rounded-lg text-white w-40 cursor-pointer shadow-xl bg-blue-500 mb-4' onClick={() => addUser(user)}>
+                        Create
+                    </button>
+                    <h2 className="flex text-sm">Already have an account? . <p className="underline pl-1  text-blue-600" onClick={()=>navigate("/")}>Log In</p></h2>
                 </div>
-                <div className="flex flex-col items-start p-4">
-                    <div className="relative border-2 border-white p-2">
-                        <label htmlFor="password" className="absolute -top-5 left-3 bg-sky-800 px-1 text-white text-xl ">Password:</label>
-                        <input className="bg-gray-900 border-2 border-white p-4 text-white w-80 text-xl outline-none" type="password" id="password" value={password} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)} />
-                    </div>
-                </div>
-                <button className="text-xl border border-white rounded-2xl p-2 cursor-pointer" onClick={() => addUser(user)}>Submit</button>
-            </section>
-            <section className="flex flex-col justify-center  content-center items-center h-160 w-120 bg-gradient-to-tl from-sky-600 to-sky-900 border-l-1 border-white border-spacing-0.5 hover:">
-                <h1 className="text-3xl" >CREATE YOUR USER!</h1>
+
+
             </section>
         </div>
     )

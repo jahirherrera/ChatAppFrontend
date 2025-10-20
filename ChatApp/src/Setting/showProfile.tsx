@@ -28,7 +28,6 @@ export default function ShowProfile({ usernameUser,showing }: profile) {
             }
             const data = await response.json();
             setUser(data);
-            console.log(data);
         } catch (e) {
             console.log(e)
         }

@@ -6,7 +6,8 @@ body {
 }
 
 .scrollbar-bg::-webkit-scrollbar {
-  width: 12px;
+  width: 4px;
+  height: 4px;
 }
 
 .scrollbar-bg::-webkit-scrollbar-track {
