@@ -95,4 +95,25 @@ export interface messageListProps{
 export interface windowMessagesProps{
     X: number;
     Y: number;
+    showing:React.Dispatch<React.SetStateAction<boolean>>;
+    giveStars: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+export interface profile {
+    usernameUser:string;
+    showing:React.Dispatch<React.SetStateAction<boolean>>;
+    
+}
+
+export interface userWithStars{
+    username : string,
+    fullname : string,
+    description: string,
+    starsGiven : number,
+}
+
+export interface giveStars{
+    amount : number,
+    usernameFrom : string,
+    usernameTo : string
 }

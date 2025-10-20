@@ -76,7 +76,6 @@ export default function ServerBar({ servers, ispublic, globalServer, getEverythi
             if (!response.ok) {
                 throw new Error("Failed to create chat");
             }
-            console.log("Chat created successfully");
             getEverything();
             setNewChatName("");
             setAddChatState(false)
@@ -97,7 +96,7 @@ export default function ServerBar({ servers, ispublic, globalServer, getEverythi
             if (!response.ok) {
                 throw new Error("Failed to delete server");
             }
-            console.log("Server deleted successfully");
+            sGlobalText("Server deleted successfully");
             getEverything();
         } catch (error) {
             console.error("Error deleting server:", error);

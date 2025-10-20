@@ -10,9 +10,9 @@ export default function ServerMember({ adding, idServer, addUsertoServer,sGlobal
 
     useEffect(() => {
         if (adding) {
-            setOr("Add user")
+            setOr("Add user to")
         } else {
-            setOr("Delete user")
+            setOr("Delete user from")
         }
     }, []);
 
@@ -92,7 +92,7 @@ export default function ServerMember({ adding, idServer, addUsertoServer,sGlobal
         <>
             <div className='fixed top-0 left-0 w-full h-full bg-gray-900/80 flex justify-center items-center text-white'>
                 <div className='bg-gradient-to-tl from-sky-600 to-sky-900 p-4 rounded-lg shadow-2xl'>
-                    <h2 className='text-xl mb-4'>{or} to server</h2>
+                    <h2 className='text-xl mb-4'>{or} server</h2>
                     <input type="text" value={typingUsername} onChange={(e) => setTypingUsername(e.target.value)} placeholder="Enter the username you want to add" className='border p-2 rounded w-100 mb-4 ' />
 
                     <div>

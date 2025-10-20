@@ -114,10 +114,10 @@ export default function HomePage() {
           </div>
           <div>
             <div className='flex justify-around w-40 items-center mt-2'>
-              <svg width="28" height="28" className="hover:cursor-pointer">
+              <svg width="28" height="28" className="hover:cursor-pointer ">
                 <use href={`${sprite}#gitlogin`} />
               </svg>
-              <svg width="19" height="19" className="hover:cursor-pointer">
+              <svg width="19" height="19" className="hover:cursor-pointer ">
                 <use href={`${sprite}#x`} />
               </svg>
               <svg width="26" height="26" className="hover:cursor-pointer">

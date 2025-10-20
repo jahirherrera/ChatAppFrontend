@@ -192,6 +192,7 @@ export default function HomePage() {
             }
             getEverything();
             setNewServerName("");
+            setGlobalText("Server Create successfully");
             setAddServerState(false)
         } catch (error) {
             alert(`Error creating server: ${error}`);
@@ -241,7 +242,7 @@ export default function HomePage() {
 
         setMessageContent("");
 
-        console.log(message);
+       
 
         const response = await fetch(`http://localhost:8080/saveMessage`, {
             method: "POST",
@@ -258,7 +259,7 @@ export default function HomePage() {
         }
 
         const data = await response.json();
-        console.log(data);
+        
 
 
 
@@ -317,7 +318,7 @@ export default function HomePage() {
                         <p className='italic'>Byte</p>Talking
                     </div>
                     <div className='flex justify-end items-center-safe  text-white'>
-                        <h1 className='mr-10 text-xl'>#{username}</h1>
+                        <h1 className='mr-10 text-xl'>@{username}</h1>
                         <button className='w-6 h-6 mr-10 flex justify-center items-center rounded hover:bg-[#36393f] hover:cursor-pointer'>
                             <svg width="19" height="19">
                                 <use href={`${sprite}#setting`} />
