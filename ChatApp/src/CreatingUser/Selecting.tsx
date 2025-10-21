@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import type { SelectProps, techs } from "../type.d.tsx";
 
-export default function Select({ setSelected }: SelectProps) {
+export default function Select({ setSelected,setDes }: SelectProps) {
 
 
 
@@ -28,6 +28,7 @@ export default function Select({ setSelected }: SelectProps) {
         { name: "SQL", color: "bg-[#336791]" },
         { name: "NoSQL", color: "bg-gradient-to-r from-[#00C896] to-[#2E7D32]" }
     ]);
+   
 
 
 
@@ -60,15 +61,15 @@ export default function Select({ setSelected }: SelectProps) {
 
                 <div className="flex flex-col">
                     <h2 className="text-lg text-white m-0.5">Description</h2>
-                    <textarea className="p-3 w-110 h-50 rounded-2xl bg-[#232327] opacity-92 border-2 border-[#3d4046] resize-none overflow-y-auto" placeholder="Tell us about you, your coding journey, project, and interest..." />
+                    <textarea className="p-3 w-110 h-50 rounded-2xl bg-[#232327] opacity-92 border-2 border-[#3d4046] resize-none overflow-y-auto" onChange={(e)=>setDes(e.target.value)} placeholder="Tell us about you, your coding journey, project, and interest..." />
                 </div>
 
                 <div className="p-1 flex flex-col  w-110 border border-[#3d4046] bg-[#232327] overflow-y-auto scrollbar-bg">
                     <h2 className="text-lg text-white m-0.5">Your Tech Stack</h2>
                     <p className="w-full border border-[#3d4046]"></p>
                     <div className="flex flex-wrap p-1 max-h-18 min-h-9 gap-1 overflow-y-auto scrollbar-bg">
-                        {select && select.map((s) => (
-                            <div className={`flex justify-center items-center  w-25 h-7 text-white rounded hover:cursor-pointer ${s.color} `} onClick={()=>deleteFromS(s)}>
+                        {select && select.map((s,index) => (
+                            <div key={index} className={`flex justify-center items-center  w-25 h-7 text-white rounded hover:cursor-pointer ${s.color} `} onClick={()=>deleteFromS(s)}>
                                 {s.name}
                             </div>
                         ))}
@@ -79,8 +80,8 @@ export default function Select({ setSelected }: SelectProps) {
                     <h2 className="text-lg text-white m-0.5">Techs Chat Available</h2>
                     <p className="w-full border border-[#3d4046]"></p>
                     <div className="flex flex-wrap p-1 max-h-18 min-h-9 gap-1 overflow-y-auto scrollbar-bg">
-                        {available && available.map((a) => (
-                            <div className={`flex justify-center items-center  w-25 h-7 text-white rounded hover:cursor-pointer ${a.color} `} onClick={()=>addToS(a)}>
+                        {available && available.map((a,index) => (
+                            <div key={index} className={`flex justify-center items-center  w-25 h-7 text-white rounded hover:cursor-pointer ${a.color} `} onClick={()=>addToS(a)}>
                                 {a.name}
                             </div>
                         ))}

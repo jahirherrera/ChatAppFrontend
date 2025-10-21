@@ -3,26 +3,45 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 
-export default function LastPage({ technologies }: LastPageProps) {
+export default function LastPage({ technologies, description }: LastPageProps) {
 
     const navigate = useNavigate();
 
-
+    
     const [fullname, setFullname] = useState<string>("");
     const [username, setUsername] = useState<string>("");
     const [password, setPassword] = useState<string>("");
-    const isExpired = false;
+    const [Cpassword, setCPassword] = useState<string>("");
+    const [email, setEmail] = useState<string>("");
+    const [wrong, setWrong] = useState<String>("");
 
     let user: User = {
         fullname: fullname,
         username: username,
         password: password,
-        isExpired: isExpired,
+        isExpired: false,
+        email : email,
+        description : description,
         technologies: technologies
     };
 
 
     const addUser = async (u: User) => {
+
+        if(password!==Cpassword){
+            setWrong("Passwords are not the same");
+            return;
+        }
+
+        if(!email.includes("@") || !email.includes(".")){
+            setWrong("Need to enter a valid email");
+            return;
+        }
+
+        if(fullname==="" || username==="" || email==="" || Cpassword==="" || password==="" ){
+            setWrong("Fields cannot be empty");
+            return;
+        }
 
         try {
             const response = await fetch("http://localhost:8080/addUser", {
@@ -66,32 +85,34 @@ export default function LastPage({ technologies }: LastPageProps) {
                 <div className="flex flex-col justify-around h-66">
                     <div className="flex flex-row justify-between items-center w-100">
                         <p className="text-white text-lg">Full Name</p>
-                        <input type="text" id="fullname" placeholder="Jon Wick" className="text-white p-1 rounded border border-[#54585f] hover:border-[#00FFFF] focus:border focus:border-[#00FFFF] outline-none  transition-all duration-300" />
+                        <input type="text" id="fullname" value={fullname} onChange={(e)=>setFullname(e.target.value)} placeholder="Jon Wick" className="text-white p-1 rounded border border-[#54585f] hover:border-[#00FFFF] focus:border focus:border-[#00FFFF] outline-none  transition-all duration-300" />
                     </div>
 
                     <div className="flex flex-row justify-between items-center w-100">
                         <p className="text-white text-lg">Username</p>
-                        <input type="text" id="Username" placeholder="Username" className="text-white p-1 rounded border border-[#54585f] hover:border-[#00FFFF] focus:border focus:border-[#00FFFF] outline-none  transition-all duration-300" />
+                        <input type="text" id="Username" placeholder="Username" value={username} onChange={(e)=>setUsername(e.target.value)} className="text-white p-1 rounded border border-[#54585f] hover:border-[#00FFFF] focus:border focus:border-[#00FFFF] outline-none  transition-all duration-300" />
                     </div>
 
                     <div className="flex flex-row justify-between items-center w-100">
                         <p className="text-white text-lg">Password</p>
-                        <input type="Password" id="password" placeholder="°°°°°°°°°°" className="text-white p-1 rounded border border-[#54585f] hover:border-[#00FFFF] focus:border focus:border-[#00FFFF] outline-none  transition-all duration-300" />
+                        <input type="Password" id="password" placeholder="°°°°°°°°°°" value={password} onChange={(e)=>setPassword(e.target.value)} className="text-white p-1 rounded border border-[#54585f] hover:border-[#00FFFF] focus:border focus:border-[#00FFFF] outline-none  transition-all duration-300" />
                     </div>
 
                     <div className="flex flex-row justify-between items-center w-100">
                         <p className="text-white text-lg">Confirm Password</p>
-                        <input type="password" id="comfrimpassword" placeholder="°°°°°°°°°°" className="text-white p-1 rounded border border-[#54585f] hover:border-[#00FFFF] focus:border focus:border-[#00FFFF] outline-none  transition-all duration-300" />
+                        <input type="password" id="comfrimpassword" placeholder="°°°°°°°°°°" value={Cpassword} onChange={(e)=>setCPassword(e.target.value)} className="text-white p-1 rounded border border-[#54585f] hover:border-[#00FFFF] focus:border focus:border-[#00FFFF] outline-none  transition-all duration-300" />
                     </div>
 
                     <div className="flex flex-row justify-between items-center w-100">
                         <p className="text-white text-lg">Email</p>
-                        <input type="email" id="email" placeholder="your.email@example.com" className="text-white p-1 rounded border border-[#54585f] hover:border-[#00FFFF] focus:border focus:border-[#00FFFF] outline-none  transition-all duration-300" />
+                        <input type="email" id="email" placeholder="your.email@example.com" value={email} onChange={(e)=>setEmail(e.target.value)} className="text-white p-1 rounded border border-[#54585f] hover:border-[#00FFFF] focus:border focus:border-[#00FFFF] outline-none  transition-all duration-300" />
                     </div>
                 </div>
 
+                
 
                 <div className="flex flex-col justify-center items-center m-2">
+                    <p className="min-h-7 text-sm text-red-500 mb-2 transition-all duration-500">{wrong}</p>
                     <button className='p-2  rounded-lg text-white w-40 cursor-pointer shadow-xl bg-blue-500 mb-4' onClick={() => addUser(user)}>
                         Create
                     </button>

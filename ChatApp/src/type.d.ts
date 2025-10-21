@@ -8,6 +8,8 @@ export interface User{
     username: string;
     password: string;
     isExpired: boolean;
+    email : string;
+    description : string;
     technologies: string[];
 }
 
@@ -35,11 +37,13 @@ export interface Message{
 }
 
 export interface SelectProps {
-  setSelected : React.Dispatch<React.SetStateAction<string[]>>        
+  setSelected : React.Dispatch<React.SetStateAction<string[]>>;
+  setDes : React.Dispatch<React.SetStateAction<string>>;
 }
 
 export interface LastPageProps {
-    technologies: string[]
+    technologies: string[];
+    description : string;
 }
 
 export interface ServerBarProps{

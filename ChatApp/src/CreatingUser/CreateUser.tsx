@@ -8,7 +8,7 @@ export default function CreateUser() {
     const navigate = useNavigate();
 
     const [page, setPage] = useState<number>(0);
-    
+    const [description,setDescription] = useState("");
     const [techSelected, settechSelected] = useState<string[]>([]);
 
 
@@ -29,8 +29,8 @@ export default function CreateUser() {
     }
 
     const pages= [
-        <Select  setSelected={settechSelected}/>,
-        <LastPage  technologies={[...techSelected]}/>
+        <Select  setSelected={settechSelected} setDes={setDescription}/>,
+        <LastPage  technologies={[...techSelected]} description={description}/>
     ]
 
 
