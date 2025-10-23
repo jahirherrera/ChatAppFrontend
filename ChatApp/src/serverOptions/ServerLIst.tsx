@@ -26,7 +26,10 @@ export default function ServerBar({ servers, ispublic, globalServer, getEverythi
     const [addingUser, setAddingUser] = useState(false);
 
     const [showMode, setShowMode] = useState(false);
+    
 
+
+    
 
     function setServerSelected(server: Server) {
         setCurrentServerState(server);

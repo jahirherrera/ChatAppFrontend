@@ -28,6 +28,11 @@ export default function LastPage({ technologies, description }: LastPageProps) {
 
     const addUser = async (u: User) => {
 
+        if(fullname==="" || username==="" || email==="" || Cpassword==="" || password==="" ){
+            setWrong("Fields cannot be empty");
+            return;
+        }
+
         if(password!==Cpassword){
             setWrong("Passwords are not the same");
             return;
@@ -38,10 +43,7 @@ export default function LastPage({ technologies, description }: LastPageProps) {
             return;
         }
 
-        if(fullname==="" || username==="" || email==="" || Cpassword==="" || password==="" ){
-            setWrong("Fields cannot be empty");
-            return;
-        }
+        
 
         try {
             const response = await fetch("http://localhost:8080/addUser", {
@@ -55,16 +57,12 @@ export default function LastPage({ technologies, description }: LastPageProps) {
                 throw new Error("Failed to create user");
             }
             const data = await response.text();
-            if (data === "taken") {
-                alert("Username already taken. Please choose a different username.");
-                return;
-            } else if (data === "added") {
-                alert("User created successfully!");
-            } else {
-                alert("Unexpected response from server: " + data);
-            }
+            setWrong(data);
 
-            navigate("/");
+            if(data==="added"){
+                navigate("/");
+            }
+            
 
 
         } catch (error) {

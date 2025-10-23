@@ -124,3 +124,18 @@ export interface techs{
     color : string;
     name : string;
 }
+
+export interface serverInfo{
+    name : string;
+    ownerUsername : string;
+    is_Public : boolean;
+    numberModerators : number;
+}
+
+export interface userInfo{
+    fullname : string;
+    username : string;
+    password : string;
+    email : string;
+    description : string;
+}

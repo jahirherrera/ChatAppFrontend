@@ -319,7 +319,7 @@ export default function HomePage() {
                     </div>
                     <div className='flex justify-end items-center-safe  text-white'>
                         <h1 className='mr-10 text-xl'>@{username}</h1>
-                        <button className='w-6 h-6 mr-10 flex justify-center items-center rounded hover:bg-[#36393f] hover:cursor-pointer'>
+                        <button className='w-6 h-6 mr-10 flex justify-center items-center rounded hover:bg-[#36393f] hover:cursor-pointer' onClick={()=>navigate("/setting")}>
                             <svg width="19" height="19">
                                 <use href={`${sprite}#setting`} />
                             </svg>
@@ -328,23 +328,23 @@ export default function HomePage() {
                     </div>
                 </header>
                 <section className='grid grid-cols-[1fr_1fr_6fr]'>
-                    <div className='grid grid-rows-[1fr_1fr] text-white text-xl  bg-[#292b2f] overflow-hidden p-1'>
-                        <section className='p-2 '>
+                    <div className='grid grid-rows-[1fr_1fr] text-white text-xl max-h-213 bg-[#292b2f] overflow-hidden p-1'>
+                        <section className='p-2 max-h-106 overflow-x-hidden overflow-y-auto scrollbar-bg '>
                             <h3 className='flex justify-between ' onContextMenu={(e) => prevendefault(e)} >PUBLIC SERVERS </h3>
                             <ServerBar servers={servers} ispublic={true} globalServer={setServerClicked} getEverything={getEverything} sGlobalText={setGlobalText} />
                         </section>
-                        <section className='p-1 '>
+                        <section className='p-1 max-h-106 overflow-y-auto scrollbar-bg'>
                             <h3 className='flex justify-between' onContextMenu={(e) => prevendefault(e)}>PRIVATES SERVES </h3>
                             <ServerBar servers={servers} ispublic={false} globalServer={setServerClicked} getEverything={getEverything} sGlobalText={setGlobalText} />
                         </section>
                     </div>
-                    <div className='flex-grow text-white text-2xl overflow-hidden bg-[#36393f] p-2'>
+                    <div className='flex text-white text-2xl overflow-hidden bg-[#36393f] p-2'>
                         <section>
                             <h3 className='flex justify-between'>Chats  </h3>
 
                             <ul className='list-none p-2'>
                                 {chatSellected.map((chat) => (
-                                    <li key={chat.id} className={` ${chatBgColor(chat)} text-xl pl-5 m-1 cursor-pointer rounded-2xl transition-colors duration-300`} onClick={() => { setChatClicked(chat) }}> # {chat.name} </li>
+                                    <li key={chat.id} className={` ${chatBgColor(chat)}  text-xl pl-2 m-1 cursor-pointer rounded-2xl transition-colors duration-300 truncate`} onClick={() => { setChatClicked(chat) }}> # {chat.name} </li>
                                 ))}
                             </ul>
                         </section>
