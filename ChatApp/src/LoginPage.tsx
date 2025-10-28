@@ -14,7 +14,6 @@ export default function HomePage() {
   const [visibleString, setVisibleString] = useState("password");
 
   const Login = async (username: string, password: string) => {
-    localStorage.removeItem("authToken");
 
     const user: UserLogin = {
       username: username,
@@ -24,6 +23,7 @@ export default function HomePage() {
     try {
       const response = await fetch("http://localhost:8080/login", {
         method: "POST",
+        credentials: "include",
         headers: {
           "Content-Type": "application/json"
         },
@@ -37,7 +37,7 @@ export default function HomePage() {
 
       const token = await response.text();
 
-      localStorage.setItem("authToken", token);
+      console.log(token);
       navigate("/Home");
 
 

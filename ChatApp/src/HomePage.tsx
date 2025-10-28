@@ -1,4 +1,4 @@
-import { jwtDecode } from 'jwt-decode';
+
 import React, { useState, useEffect } from "react";
 import type { Chat, Server, Message } from './type.d';
 import { useNavigate } from "react-router-dom";
@@ -17,9 +17,8 @@ export default function HomePage() {
 
     const [addServerState, setAddServerState] = useState<boolean>(false);
     const navigate = useNavigate();
-    const token: string = localStorage.getItem("authToken") || "";
-    const decode: any = jwtDecode(token);
-    const username: string = decode.sub;
+    
+    const username: string = "";
     //servers
     const [servers, setServers] = useState<Server[]>([]);
     const [serverClicked, setServerClicked] = useState<Server | undefined>();
@@ -54,19 +53,15 @@ export default function HomePage() {
 
 
     function getEverything() {
-        getServers(username);
-        getChats(username);
+        getServers();
+        getChats();
     }
 
-    function getServers(username: string) {
-        fetch(`http://localhost:8080/serverOfUser/${username}`, {
+    function getServers() {
+        fetch(`http://localhost:8080/serverOfUser`, {
 
             method: "GET",
-            headers: {
-                // "Content-Type": "application/json",  only needed for POST/PUT/PATCH requests
-                "Authorization": "Bearer " + token,
-            },
-            // body: JSON.stringify(username)   we cannot send body in GET request
+            credentials: "include",
         }).then((response) => {
             if (!response.ok) {
                 throw new Error("Network response was not ok");
@@ -83,12 +78,10 @@ export default function HomePage() {
         });
     }
 
-    function getChats(username: string) {
-        fetch(`http://localhost:8080/chats/${username}`, {
+    function getChats() {
+        fetch(`http://localhost:8080/chats`, {
             method: "GET",
-            headers: {
-                "authorization": "Bearer " + token,
-            },
+            credentials: "include",
         }).then((response) => {
             if (!response.ok) {
                 throw new Error("Network response was not ok");
@@ -152,9 +145,8 @@ export default function HomePage() {
             try {
                 const response = await fetch(`http://localhost:8080/messages/${chatClicked.id}`, {
                     method: "GET",
-                    headers: {
-                        "Authorization": "Bearer " + token,
-                    },
+                    credentials: "include",
+                   
                 });
                 if (!response.ok) {
                     throw new Error("Network response was not ok");
@@ -181,8 +173,8 @@ export default function HomePage() {
         try {
             const response = await fetch("http://localhost:8080/addServer", {
                 method: "POST",
+                credentials: "include",
                 headers: {
-                    "Authorization": "Bearer " + token,
                     "Content-Type": "application/json"
                 },
                 body: JSON.stringify(s)
@@ -204,7 +196,6 @@ export default function HomePage() {
 
 
     function logout() {
-        localStorage.removeItem("authToken");
         navigate("/");
     }
 
@@ -246,9 +237,9 @@ export default function HomePage() {
 
         const response = await fetch(`http://localhost:8080/saveMessage`, {
             method: "POST",
+            credentials: "include",
             headers: {
 
-                "Authorization": "Bearer " + token,
                 "Content-Type": "application/json"
             },
             body: JSON.stringify(message)

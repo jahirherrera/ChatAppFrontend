@@ -3,16 +3,13 @@ import type { ServerBarProps, Server, Chat, deleteAdd } from '../type';
 import { useEffect, useState } from 'react';
 import WOptionS from './wOptionS';
 import ServerMember from './serverMember';
-import { jwtDecode } from 'jwt-decode';
 import ShowModerators from './showMode';
 
 
 
 export default function ServerBar({ servers, ispublic, globalServer, getEverything, sGlobalText }: ServerBarProps) {
 
-    const token: string = localStorage.getItem("authToken") || "";
-    const decode: any = jwtDecode(token);
-    const username: string = decode.sub;
+    const username: string = "";
 
     const [menu, setMenu] = useState({ visible: false, x: 0, y: 0 });
 
@@ -70,8 +67,8 @@ export default function ServerBar({ servers, ispublic, globalServer, getEverythi
 
             const response = await fetch("http://localhost:8080/addChat", {
                 method: "POST",
+                credentials: "include",
                 headers: {
-                    "Authorization": "Bearer " + token,
                     "Content-Type": "application/json"
                 },
                 body: JSON.stringify(newchat)
@@ -92,9 +89,7 @@ export default function ServerBar({ servers, ispublic, globalServer, getEverythi
         try {
             const response = await fetch(`http://localhost:8080/deleteServer/${serverId}`, {
                 method: "DELETE",
-                headers: {
-                    "Authorization": "Bearer " + token,
-                },
+                credentials: "include",
             });
             if (!response.ok) {
                 throw new Error("Failed to delete server");
@@ -119,8 +114,8 @@ export default function ServerBar({ servers, ispublic, globalServer, getEverythi
         try {
             const response = await fetch("http://localhost:8080/leavingServer", {
                 method: "POST",
+                credentials: "include", 
                 headers: {
-                    "Authorization": "Bearer " + token,
                     "Content-Type": "application/json"
                 },
                 body: JSON.stringify(UserData)

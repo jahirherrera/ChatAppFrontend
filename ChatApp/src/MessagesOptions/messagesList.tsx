@@ -3,7 +3,6 @@ import { useState, useEffect } from "react";
 import WindowMessages from "./windowMessage";
 import WindowProfile from "./windowProfile";
 import ShowProfile from "../Setting/showProfile";
-import { jwtDecode } from "jwt-decode";
 //@ts-ignore
 import sprite from '../assets/sprite.svg';
 
@@ -11,9 +10,8 @@ import sprite from '../assets/sprite.svg';
 
 export default function MessageList({ messages }: messageListProps) {
 
-    const token: string = localStorage.getItem("authToken") || "";
-    const decode: any = jwtDecode(token);
-    const username: string = decode.sub;
+
+    const username: string ="";
 
     const [showProfile, setShowProfile] = useState(false);
 
@@ -76,8 +74,8 @@ export default function MessageList({ messages }: messageListProps) {
         try{
             const response = await fetch("http://localhost:8080/giveStars",{
             method : "POST",
+            credentials: "include",
             headers : {
-                "Authorization": "Bearer " + token,
                 "Content-Type": "application/json"
             },
             body : JSON.stringify(sendStar)
