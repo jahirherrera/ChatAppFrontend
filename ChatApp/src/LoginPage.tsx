@@ -34,10 +34,7 @@ export default function HomePage() {
         throw new Error("Could not login. Please check your credentials.");
       }
 
-
-      const token = await response.text();
-
-      console.log(token);
+      localStorage.setItem("Username", username);
       navigate("/Home");
 
 

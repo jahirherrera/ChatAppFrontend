@@ -3,7 +3,6 @@ import { useState, useEffect } from "react";
 
 export default function ShowModerators({ server_id, showing }: showMode) {
 
-    const token: string = localStorage.getItem("authToken") || "";
     const [server, setServer] = useState<serverInfo>();
 
     useEffect(() => {
@@ -14,9 +13,7 @@ export default function ShowModerators({ server_id, showing }: showMode) {
         try {
             const response = await fetch(`http://localhost:8080/serverInfo/${server_id}`, {
                 method: "GET",
-                headers: {
-                    "Authorization": "Bearer " + token,
-                },
+                credentials:"include",
             });
             if (!response.ok) {
                 console.log("something were wrong")

@@ -34,7 +34,7 @@ export default function ServerBar({ servers, ispublic, globalServer, getEverythi
     }
 
     function selected(s: Server): string {
-        if (currentServer?.id === s.id) return " border-l-[7px] border-[#5865f2]  bg-gradient-to-r from-[#5865f2] to-transparent ";
+        if (currentServer?.id === s.id) return " border-l-[7px] border-[var(--hover)]  bg-gradient-to-r from-[var(--hover)] to-transparent ";
         return "";
     }
 
@@ -139,7 +139,7 @@ export default function ServerBar({ servers, ispublic, globalServer, getEverythi
         <>
             <ul className='list-none p-1 text-xl'>
                 {servers.filter(s => s.is_Public === ispublic).map((server) => (
-                    <li key={server.id} onContextMenu={(e) => prevendefault(e, server)} className={` ${selected(server)}   rounded-2xl cursor-pointer pl-4 m-1 transition-colors duration-500 hover:bg-[#36393f]`} onClick={() => setServerSelected(server)}> {server.name} </li>
+                    <li key={server.id} onContextMenu={(e) => prevendefault(e, server)} className={` ${selected(server)}   rounded-2xl cursor-pointer pl-4 m-1 transition-colors duration-500 hover:bg-[#d3d6db]`} onClick={() => setServerSelected(server)}> {server.name} </li>// hover:bg-[#36393f]
                 ))}
                 {menu.visible && <WOptionS X={menu.x} Y={menu.y} leaveServer={leaveServer} addChat={setAddChatState} deteleServer={() => { if (serverRightClick) deleteServer(serverRightClick?.id) } } addUsertoServer={setAddDeleteUsertoServerState} adding={setAddingUser} owner={serverRightClick ? serverRightClick?.ownerUsername : ""}  showmode={setShowMode}></WOptionS>}
             </ul>

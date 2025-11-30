@@ -91,7 +91,7 @@ export default function ServerMember({ adding, idServer, addUsertoServer,sGlobal
     return (
         <>
             <div className='fixed top-0 left-0 w-full h-full bg-gray-900/80 flex justify-center items-center text-white'>
-                <div className='bg-gradient-to-tl from-sky-600 to-sky-900 p-4 rounded-lg shadow-2xl'>
+                <div className='bg-gradient-to-tl from-[#1db146] to-sky-900 p-4 rounded-lg shadow-2xl'>
                     <h2 className='text-xl mb-4'>{or} server</h2>
                     <input type="text" value={typingUsername} onChange={(e) => setTypingUsername(e.target.value)} placeholder="Enter the username you want to add" className='border p-2 rounded w-100 mb-4 ' />
 

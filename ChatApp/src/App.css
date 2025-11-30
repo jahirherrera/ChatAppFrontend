@@ -23,10 +23,10 @@ body {
   background: #6b7280;
 }
 
-
+//#9ca3af #4b5563
 .scrollbar-bg {
   scrollbar-width: thin;
-  scrollbar-color: #9ca3af #4b5563;
+  scrollbar-color: white; 
 }
 
 input:-webkit-autofill,
@@ -40,3 +40,40 @@ input:-webkit-autofill:active {
   background-color: transparent !important;
   transition: background-color 9999s ease-in-out 0s !important;
 }
+
+:root{
+  --bg:white;
+  --chat:#d3d6db;
+  --text:black;
+  --hover:oklch(62.3% 0.214 259.815);
+}
+
+.darkdefault{
+  --bg:#292b2f;
+  --chat:#36393f;
+  --text:white;
+  --hover:oklch(62.3% 0.214 259.815);
+}
+
+.darkgithub{
+  --bg:#292b2f;
+  --chat:#36393f;
+  --text:white;
+  --hover:#08872B;
+}
+
+.lightdefault{
+  --bg:white;
+  --chat:#d3d6db;
+  --text:black;
+  --hover:oklch(62.3% 0.214 259.815);
+}
+
+.lightgithub{
+  --bg:white;
+  --chat:#d3d6db;
+  --text:black;
+  --hover:#1db146;
+}
+
+

@@ -1,20 +1,25 @@
 import type { windowOptionSProps } from "../type";
 import { useEffect, useState } from "react";
-import { jwtDecode } from "jwt-decode";
 
 
 
 export default function WOptionS({ X, Y, addChat, deteleServer, addUsertoServer, adding, owner,leaveServer, showmode }: windowOptionSProps) {
-    const token: string = localStorage.getItem("authToken") || "";
-    const decode: any = jwtDecode(token);
-    const username: string = decode.sub;
+    
+
+    const [username, setUsername] = useState<string>("")
     const [isOwnwe, setIsOwner] = useState(false);
 
     useEffect(() => {
+
+        setUsername(localStorage.getItem("Username") || "");
+
+    }, [])
+
+    useEffect(()=>{
         if (username === owner) {
             setIsOwner(true);
         }
-    }, [])
+    },[username])
 
     function createServer() {
         addChat(true);

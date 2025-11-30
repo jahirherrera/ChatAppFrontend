@@ -17,8 +17,9 @@ export default function HomePage() {
 
     const [addServerState, setAddServerState] = useState<boolean>(false);
     const navigate = useNavigate();
-    
-    const username: string = "";
+
+    const [username,setUsername] = useState<string>("")
+    const [theme,setTheme] = useState<string>("")
     //servers
     const [servers, setServers] = useState<Server[]>([]);
     const [serverClicked, setServerClicked] = useState<Server | undefined>();
@@ -49,7 +50,10 @@ export default function HomePage() {
 
     useEffect(() => {
         getEverything();
+        setTheme(localStorage.getItem("Theme") || "");
+        setUsername(localStorage.getItem("Username") || "");
     }, []);
+
 
 
     function getEverything() {
@@ -146,7 +150,7 @@ export default function HomePage() {
                 const response = await fetch(`http://localhost:8080/messages/${chatClicked.id}`, {
                     method: "GET",
                     credentials: "include",
-                   
+
                 });
                 if (!response.ok) {
                     throw new Error("Network response was not ok");
@@ -233,13 +237,12 @@ export default function HomePage() {
 
         setMessageContent("");
 
-       
+
 
         const response = await fetch(`http://localhost:8080/saveMessage`, {
             method: "POST",
             credentials: "include",
             headers: {
-
                 "Content-Type": "application/json"
             },
             body: JSON.stringify(message)
@@ -250,7 +253,7 @@ export default function HomePage() {
         }
 
         const data = await response.json();
-        
+
 
 
 
@@ -277,7 +280,7 @@ export default function HomePage() {
     }
 
     const chatBgColor = (chat: Chat): string => {
-        if (chatClicked?.id === chat.id) return "bg-[#5865f2]  border-[#5865f2] ";
+        if (chatClicked?.id === chat.id) return "bg-[var(--hover)]  border-[var(--hover)] ";
         return "";
     }
 
@@ -294,23 +297,22 @@ export default function HomePage() {
 
     useEffect(() => {
 
-        if (globalText !== "" ) {
+        if (globalText !== "") {
             setShow(true);
         }
     }, [globalText])
 
 
-
     return (
         <>
-            <div className='grid grid-rows-[1fr_19fr_1fr]  w-full h-screen  m-0 p-0' >
-                <header className='grid grid-cols-[2fr_14fr] border-b text-sm border-[#36393f] bg-[#292b2f] p-1'>
-                    <div className=' text-white text-2xl flex justify-center items-center p-1 '>
+            <div className={`grid grid-rows-[1fr_19fr_1fr]  w-full h-screen  m-0 p-0 ${theme}`} >
+                <header className='grid grid-cols-[2fr_14fr] border-b text-sm border-[var(--chat)] bg-[var(--bg)] p-1'>
+                    <div className=' text-[var(--text)] text-2xl flex justify-center items-center p-1 '>
                         <p className='italic'>Byte</p>Talking
                     </div>
-                    <div className='flex justify-end items-center-safe  text-white'>
+                    <div className='flex justify-end items-center-safe  text-[var(--text)]'>
                         <h1 className='mr-10 text-xl'>@{username}</h1>
-                        <button className='w-6 h-6 mr-10 flex justify-center items-center rounded hover:bg-[#36393f] hover:cursor-pointer' onClick={()=>navigate("/setting")}>
+                        <button className='w-6 h-6 mr-10 flex justify-center items-center rounded hover:bg-[var(--chat)] hover:cursor-pointer' onClick={() => navigate("/setting")}>
                             <svg width="19" height="19">
                                 <use href={`${sprite}#setting`} />
                             </svg>
@@ -319,7 +321,7 @@ export default function HomePage() {
                     </div>
                 </header>
                 <section className='grid grid-cols-[1fr_1fr_6fr]'>
-                    <div className='grid grid-rows-[1fr_1fr] text-white text-xl max-h-213 bg-[#292b2f] overflow-hidden p-1'>
+                    <div className='grid grid-rows-[1fr_1fr] text-[var(--text)] text-xl max-h-213 bg-[var(--bg)] overflow-hidden p-1'>
                         <section className='p-2 max-h-106 overflow-x-hidden overflow-y-auto scrollbar-bg '>
                             <h3 className='flex justify-between ' onContextMenu={(e) => prevendefault(e)} >PUBLIC SERVERS </h3>
                             <ServerBar servers={servers} ispublic={true} globalServer={setServerClicked} getEverything={getEverything} sGlobalText={setGlobalText} />
@@ -329,7 +331,7 @@ export default function HomePage() {
                             <ServerBar servers={servers} ispublic={false} globalServer={setServerClicked} getEverything={getEverything} sGlobalText={setGlobalText} />
                         </section>
                     </div>
-                    <div className='flex text-white text-2xl overflow-hidden bg-[#36393f] p-2'>
+                    <div className='flex text-[var(--text)] text-2xl overflow-hidden bg-[var(--chat)] p-2'>
                         <section>
                             <h3 className='flex justify-between'>Chats  </h3>
 
@@ -340,17 +342,21 @@ export default function HomePage() {
                             </ul>
                         </section>
                     </div>
-                    <div className='grid grid-rows-[24fr_2fr]   bg-[#292b2f] '>
+                    <div className='grid grid-rows-[24fr_2fr]   bg-[var(--bg)]'>
 
                         <MessageList messages={messagesFromChat.filter(message => message.chat_id === chatClicked?.id)}></MessageList>
 
-                        <div className='text-white flex justify-between items-start p-2 '>
-                            <input id='message' className='p-2  pl-4 rounded-2xl w-full bg-[#36393f]' value={messageContent} placeholder='Enter a message' onChange={(e: React.ChangeEvent<HTMLInputElement>) => setMessageContent(e.target.value)} onKeyDown={enterSendMessage}></input>
+                        <div className='text-[var(--text)] flex justify-between items-start p-2 '>{/*text-white */}
+                            <input id='message' className='p-2  pl-4 rounded-2xl w-full bg-[var(--chat)]'
+                                value={messageContent}
+                                placeholder='Enter a message'
+                                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setMessageContent(e.target.value)} onKeyDown={enterSendMessage}>
+                            </input>{/*bg-[#36393f] */}
                         </div>
 
                     </div>
                 </section>
-                <footer className='text-gray-400 text-sm text-center bg-[#292b2f] border-t border-[#36393f] p-1 flex justify-between items-center'>
+                <footer className='text-gray-600 text-sm text-center bg-[var(--bg)] border-t border-[var(--chat)] p-1 flex justify-between items-center'>
                     <p>&copy; 2024 ByteTalking. All rights reserved.</p>
                     <div className='flex justify-around w-40 items-center'>
                         <svg width="19" height="19">
@@ -367,7 +373,7 @@ export default function HomePage() {
                 {menu.visible && <WindowOption X={menu.x} Y={menu.y} addServer={setAddServerState} />}
                 {
                     addServerState && (
-                        <div className='fixed top-0 left-0 w-full h-full bg-gray-900/80 flex justify-center items-center text-white '>
+                        <div className='fixed top-0 left-0 w-full h-full bg-gray-900/80 flex justify-center items-center text-black '>
                             <div className='bg-gradient-to-tl from-sky-600 to-sky-900 p-4 rounded-lg'>
                                 <h2 className='text-xl mb-4'>Add Server</h2>
                                 <input type="text" value={newServerName} onChange={(e) => setNewServerName(e.target.value)} placeholder="Server Name" className='border p-2 rounded w-100 mb-4 ' />
@@ -375,7 +381,7 @@ export default function HomePage() {
                                     <input className="m-2 " type="checkbox" id="{item}" onClick={isPublicChange} />
                                     <label className="text-lg   cursor-pointer" htmlFor="{item}"> Private </label>
                                 </div>
-                                <button onClick={() => createServer(newServerName, username)} className='bg-blue-500 text-white p-2 rounded'>Create Server</button>
+                                <button onClick={() => createServer(newServerName, username)} className='bg-blue-500 text-black p-2 rounded'>Create Server</button>
                                 <button onClick={() => setAddServerState(false)} className='ml-2 bg-red-500 text-white p-2 rounded'>Close</button>
                             </div>
                         </div>
