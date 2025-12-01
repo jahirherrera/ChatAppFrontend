@@ -11,7 +11,8 @@ import sprite from '../assets/sprite.svg';
 export default function MessageList({ messages }: messageListProps) {
 
 
-    const username: string ="";
+    const [username, setUsername] = useState("");
+    const [theme, setTheme] = useState("");
 
     const [showProfile, setShowProfile] = useState(false);
 
@@ -20,7 +21,10 @@ export default function MessageList({ messages }: messageListProps) {
     const [userClick, setUserClick] = useState<string>("")
     const [showStar, setShowStar] = useState<boolean>(false);
 
-    
+    useEffect(()=>{
+        setTheme(localStorage.getItem("Theme") || "")
+        setUsername(localStorage.getItem("Username") || "")
+    },[])
 
     const [menu, setMenu] = useState<{ visible: boolean; x: number; y: number }>({
         visible: false,
@@ -104,15 +108,15 @@ export default function MessageList({ messages }: messageListProps) {
 
     return (
         <>
-            <div className='text-white text-xl overflow-y-scroll flex flex-col-reverse scrollbar-bg max-h-194'>
+            <div className={`text-[var(--text)] text-xl overflow-y-scroll flex flex-col-reverse scrollbar-bg max-h-194  ${theme}`}>
                 <ul className=' p-2 pl-4 flex flex-col m-0'>
                     {
                         messages.map((m, i) => (
-                            <li key={i} className=' border-white ' >
+                            <li key={i} className='' >
                                 <div className='flex flex-col'>
 
                                     {messagesOrderLogic(i, messages)}
-                                    <span className="pl-2 hover:bg-[#36393f] rounded" onContextMenu={(e) => prevendefault(e)}>{m.content}</span>
+                                    <span className="pl-2 hover:bg-[var(--chat)] rounded" onContextMenu={(e) => prevendefault(e)}>{m.content}</span>
                                 </div>
                             </li>
                         ))

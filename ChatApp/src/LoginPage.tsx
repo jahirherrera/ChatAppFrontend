@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { href, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import type { UserLogin } from "./type.d.tsx";
 //@ts-ignore
@@ -59,6 +59,11 @@ export default function HomePage() {
   }, [visible])
 
 
+  const goToGoogle =()=>{
+    window.location.href = "http://localhost:8080/oauth2/authorization/google"
+  }
+
+
 
   return (
     <div className="flex justify-center items-center w-screen h-screen bg-[url(./assets/bg.png)] bg-cover bg-center bg-no-repeat text-white ">
@@ -114,11 +119,8 @@ export default function HomePage() {
               <svg width="28" height="28" className="hover:cursor-pointer ">
                 <use href={`${sprite}#gitlogin`} />
               </svg>
-              <svg width="19" height="19" className="hover:cursor-pointer ">
-                <use href={`${sprite}#x`} />
-              </svg>
-              <svg width="26" height="26" className="hover:cursor-pointer">
-                <use href={`${sprite}#google`} />
+              <svg width="26" height="26" className="hover:cursor-pointer" onClick={goToGoogle}>
+                <use href={`${sprite}#google`}  />
               </svg>
             </div>
           </div>

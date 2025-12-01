@@ -1,5 +1,4 @@
 import type { profile, userWithStars } from "../type";
-import { jwtDecode } from "jwt-decode";
 import { useState, useEffect } from "react";
 //@ts-ignore
 import sprite from '../assets/sprite.svg';
@@ -7,12 +6,13 @@ import sprite from '../assets/sprite.svg';
 
 
 export default function ShowProfile({ usernameUser,showing }: profile) {
-    const token: string = localStorage.getItem("authToken") || "";
-    const decode: any = jwtDecode(token);
-    const username: string = decode.sub;
+    
     const [user, setUser] = useState<userWithStars>();
+    
+    const [theme, setTheme] = useState<string>("");
 
     useEffect(() => {
+        setTheme(localStorage.getItem("Theme") || "")
         getUserByUsername();
     }, [])
 
@@ -21,7 +21,7 @@ export default function ShowProfile({ usernameUser,showing }: profile) {
         try {
             const response = await fetch(`http://localhost:8080/getUserProfile/${usernameUser}`, {
                 method: "GET",
-                headers: { "Authorization": "Bearer " + token }
+                credentials:"include",
             })
             if (!response.ok) {
                 console.log("something were wrong");
@@ -37,16 +37,16 @@ export default function ShowProfile({ usernameUser,showing }: profile) {
 
     return (
         <>
-            <div className='fixed top-0 left-0 w-full h-full bg-gray-900/80 flex justify-center items-center text-white '>
-                <button className="absolute top-4 right-4 bg-red-500 text-white w-10 h-10 rounded-full hover:bg-red-600 transition z-50" onClick={()=>showing(false)}>X</button>
-                <section className=" bg-gradient-to-b from-gray-600  flex flex-col justify-center items-center h-screen w-200 border-l border-r  border-white">
+            <div className={`fixed top-0 left-0 w-full h-full bg-gray-900/80 flex justify-center items-center text-[var(--text)] ${theme}`}>
+                <button className="absolute top-4 right-4 bg-red-500 text-[var(--text)] w-10 h-10 rounded-full hover:bg-red-600 transition z-50" onClick={()=>showing(false)}>X</button>
+                <section className=" bg-[var(--chat)]  flex flex-col justify-center items-center h-screen w-200 border-l border-r  border-[var(--text)]">
 
                     <p className="w-50 h-50 bg-blue-500 rounded-full border shadow-sky-50 shadow-lg mb-3"></p>
-                    <p className="m-4 text-8xl ">{user?.fullname}</p>
+                    <p className="m-4 text-3xl ">{user?.fullname}</p>
 
                     {/* The code below is copy from chatgpt */}
                     <div className="flex flex-col justify-center items-center">
-                        <p className="m-4 text-2xl text-[#606b81]">@{user?.username}</p>
+                        <p className="m-4 text-2xl text-[var(--text)]">@{user?.username}</p>
 
                         {/* Inline mask for the stars */}
                         <svg width="0" height="0">
@@ -82,7 +82,7 @@ export default function ShowProfile({ usernameUser,showing }: profile) {
                                         width="26"
                                         height="26"
                                         viewBox="0 0 24 24"
-                                        className="text-gray-400"
+                                        className="text-[var(--text)]"
                                         fill="none"
                                         stroke="currentColor"
                                         strokeWidth="1.5"

@@ -11,6 +11,7 @@ import sprite from './assets/sprite.svg';
 import WindowOption from './windowOption';
 import DisappearingDiv from './disapearDiv';
 import MessageList from './MessagesOptions/messagesList';
+import FindServer from "./serverOptions/findServer";
 
 
 export default function HomePage() {
@@ -40,6 +41,9 @@ export default function HomePage() {
     //Little window of changes
     const [globalText, setGlobalText] = useState<string>("");
     const [show, setShow] = useState<boolean>(false);
+
+    //serverfindind
+    const [lookServer, setLookServer] = useState<boolean>(false);
 
     //Menu
     const [menu, setMenu] = useState<{ visible: boolean; x: number; y: number }>({
@@ -189,7 +193,8 @@ export default function HomePage() {
             getEverything();
             setNewServerName("");
             setGlobalText("Server Create successfully");
-            setAddServerState(false)
+            setAddServerState(false);
+            setIs_public(true);
         } catch (error) {
             alert(`Error creating server: ${error}`);
         }
@@ -295,6 +300,10 @@ export default function HomePage() {
         setMenu({ visible: true, x: e.pageX, y: e.pageY });
     }
 
+    useEffect(()=>{
+        getEverything();
+    },[lookServer])
+
     useEffect(() => {
 
         if (globalText !== "") {
@@ -324,11 +333,11 @@ export default function HomePage() {
                     <div className='grid grid-rows-[1fr_1fr] text-[var(--text)] text-xl max-h-213 bg-[var(--bg)] overflow-hidden p-1'>
                         <section className='p-2 max-h-106 overflow-x-hidden overflow-y-auto scrollbar-bg '>
                             <h3 className='flex justify-between ' onContextMenu={(e) => prevendefault(e)} >PUBLIC SERVERS </h3>
-                            <ServerBar servers={servers} ispublic={true} globalServer={setServerClicked} getEverything={getEverything} sGlobalText={setGlobalText} />
+                            <ServerBar servers={servers} ispublic={true} globalServer={setServerClicked} getEverything={getEverything} sGlobalText={setGlobalText} globalServerState={serverClicked}/>
                         </section>
                         <section className='p-1 max-h-106 overflow-y-auto scrollbar-bg'>
                             <h3 className='flex justify-between' onContextMenu={(e) => prevendefault(e)}>PRIVATES SERVES </h3>
-                            <ServerBar servers={servers} ispublic={false} globalServer={setServerClicked} getEverything={getEverything} sGlobalText={setGlobalText} />
+                            <ServerBar servers={servers} ispublic={false} globalServer={setServerClicked} getEverything={getEverything} sGlobalText={setGlobalText} globalServerState={serverClicked}/>
                         </section>
                     </div>
                     <div className='flex text-[var(--text)] text-2xl overflow-hidden bg-[var(--chat)] p-2'>
@@ -346,12 +355,12 @@ export default function HomePage() {
 
                         <MessageList messages={messagesFromChat.filter(message => message.chat_id === chatClicked?.id)}></MessageList>
 
-                        <div className='text-[var(--text)] flex justify-between items-start p-2 '>{/*text-white */}
+                        <div className='text-[var(--text)] flex justify-between items-start p-2 '>
                             <input id='message' className='p-2  pl-4 rounded-2xl w-full bg-[var(--chat)]'
                                 value={messageContent}
                                 placeholder='Enter a message'
                                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => setMessageContent(e.target.value)} onKeyDown={enterSendMessage}>
-                            </input>{/*bg-[#36393f] */}
+                            </input>
                         </div>
 
                     </div>
@@ -359,29 +368,33 @@ export default function HomePage() {
                 <footer className='text-gray-600 text-sm text-center bg-[var(--bg)] border-t border-[var(--chat)] p-1 flex justify-between items-center'>
                     <p>&copy; 2024 ByteTalking. All rights reserved.</p>
                     <div className='flex justify-around w-40 items-center'>
-                        <svg width="19" height="19">
+                        
+                        <svg width="19" height="19" className="text-[var(--text)] hover:cursor-pointer" onClick={()=>window.location.href="https://github.com/jahirherrera"}>
                             <use href={`${sprite}#github`} />
                         </svg>
-                        <svg width="19" height="19">
+                        <svg width="19" height="19" className="text-[var(--text)] hover:cursor-pointer">
                             <use href={`${sprite}#x`} />
                         </svg>
-                        <svg width="19" height="19">
+                        <svg width="19" height="19" className="text-[var(--text)] hover:cursor-pointer">
                             <use href={`${sprite}#instagram`} />
                         </svg>
                     </div>
                 </footer>
-                {menu.visible && <WindowOption X={menu.x} Y={menu.y} addServer={setAddServerState} />}
+                {menu.visible && <WindowOption X={menu.x} Y={menu.y} addServer={setAddServerState} lookServer={setLookServer}/>}
+                {
+                    lookServer && <FindServer showing={setLookServer}/>
+                }
                 {
                     addServerState && (
-                        <div className='fixed top-0 left-0 w-full h-full bg-gray-900/80 flex justify-center items-center text-black '>
-                            <div className='bg-gradient-to-tl from-sky-600 to-sky-900 p-4 rounded-lg'>
+                        <div className={`fixed top-0 left-0 w-full h-full bg-gray-900/80 flex justify-center items-center text-[var(--text)] ${theme}`}>
+                            <div className='bg-gradient-to-tl from-[var(--chat)] to-[var(--chat)]/80 p-4 rounded-lg'>
                                 <h2 className='text-xl mb-4'>Add Server</h2>
                                 <input type="text" value={newServerName} onChange={(e) => setNewServerName(e.target.value)} placeholder="Server Name" className='border p-2 rounded w-100 mb-4 ' />
                                 <div className='mb-4'>
                                     <input className="m-2 " type="checkbox" id="{item}" onClick={isPublicChange} />
                                     <label className="text-lg   cursor-pointer" htmlFor="{item}"> Private </label>
                                 </div>
-                                <button onClick={() => createServer(newServerName, username)} className='bg-blue-500 text-black p-2 rounded'>Create Server</button>
+                                <button onClick={() => createServer(newServerName, username)} className='bg-[var(--hover)] text-black p-2 rounded'>Create Server</button>
                                 <button onClick={() => setAddServerState(false)} className='ml-2 bg-red-500 text-white p-2 rounded'>Close</button>
                             </div>
                         </div>

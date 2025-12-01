@@ -1,5 +1,5 @@
 
-import type { ServerBarProps, Server, Chat, deleteAdd } from '../type';
+import type { ServerBarProps, Server, Chat, deleteAdd, windowPropsS } from '../type';
 import { useEffect, useState } from 'react';
 import WOptionS from './wOptionS';
 import ServerMember from './serverMember';
@@ -7,11 +7,14 @@ import ShowModerators from './showMode';
 
 
 
-export default function ServerBar({ servers, ispublic, globalServer, getEverything, sGlobalText }: ServerBarProps) {
+export default function ServerBar({ servers, ispublic, globalServer, globalServerState, getEverything, sGlobalText }: ServerBarProps) {
 
-    const username: string = "";
 
-    const [menu, setMenu] = useState({ visible: false, x: 0, y: 0 });
+    const [username, setUsername] = useState("");
+
+    const [menu, setMenu] = useState(false);
+
+    const [theme, setTheme] = useState("");
 
     const [currentServer, setCurrentServerState] = useState<Server | undefined>(undefined);
     const [serverRightClick, setServerRightClick] = useState<Server | undefined>(undefined);
@@ -23,10 +26,26 @@ export default function ServerBar({ servers, ispublic, globalServer, getEverythi
     const [addingUser, setAddingUser] = useState(false);
 
     const [showMode, setShowMode] = useState(false);
-    
+
+    const [allProp, setAllProp] = useState<windowPropsS>({
+        allProps: {
+            X: 0,
+            Y: 0,
+            serverClicked: serverRightClick,
+            getEverything: getEverything,
+            addChat: setAddChatState,
+            showInfo : setShowMode,
+            showAddDelete : setAddDeleteUsertoServerState,
+            addding:setAddingUser
+        }
+    });
 
 
-    
+    useEffect(() => {
+        setUsername(localStorage.getItem("Username") || "");
+        setTheme(localStorage.getItem("Theme") || "");
+    }, [])
+
 
     function setServerSelected(server: Server) {
         setCurrentServerState(server);
@@ -34,21 +53,24 @@ export default function ServerBar({ servers, ispublic, globalServer, getEverythi
     }
 
     function selected(s: Server): string {
-        if (currentServer?.id === s.id) return " border-l-[7px] border-[var(--hover)]  bg-gradient-to-r from-[var(--hover)] to-transparent ";
+        if (globalServerState?.id === s.id) return " border-l-[7px] border-[var(--hover)]  bg-gradient-to-r from-[var(--hover)] to-transparent ";
         return "";
     }
 
     useEffect(() => {
-        const close = () => setMenu({ ...menu, visible: false });
+        const close = () => setMenu(false);
         window.addEventListener("click", close);
         return () => window.removeEventListener("click", close);
     }, [menu]);
 
     function prevendefault(e: React.MouseEvent, server: Server) {
         e.preventDefault();
-        setMenu({ visible: true, x: e.pageX, y: e.pageY });
+        setMenu(true);
         setServerRightClick(server);
+        setAllProp({allProps: { X: e.pageX, Y: e.pageY, serverClicked: server, getEverything: getEverything, addChat: setAddChatState , showInfo:setShowMode , showAddDelete:setAddDeleteUsertoServerState, addding:setAddingUser} })
     }
+
+
 
     const createChat = async (chatname: string, serverId: number) => {
 
@@ -78,57 +100,10 @@ export default function ServerBar({ servers, ispublic, globalServer, getEverythi
             }
             getEverything();
             setNewChatName("");
-            setAddChatState(false)
+            setAddChatState(false);
+            sGlobalText("Chat has created succefully")
         } catch (error) {
             console.error("Error creating chat:", error);
-        }
-    }
-
-
-    const deleteServer = async (serverId: number) => {
-        try {
-            const response = await fetch(`http://localhost:8080/deleteServer/${serverId}`, {
-                method: "DELETE",
-                credentials: "include",
-            });
-            if (!response.ok) {
-                throw new Error("Failed to delete server");
-            }
-            sGlobalText("Server deleted successfully");
-            getEverything();
-        } catch (error) {
-            console.error("Error deleting server:", error);
-        }
-    }
-
-    const leaveServer = async () => {
-
-        if (!serverRightClick) return;
-
-        const UserData: deleteAdd = {
-            id_server: serverRightClick?.id,
-            owner: "",
-            user: username,
-        }
-
-        try {
-            const response = await fetch("http://localhost:8080/leavingServer", {
-                method: "POST",
-                credentials: "include", 
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify(UserData)
-
-            })
-            if (!response.ok) {
-                throw new Error("Failed to delete user to server");
-            }
-
-            getEverything();
-
-        } catch (e) {
-            console.log(e);
         }
     }
 
@@ -139,17 +114,17 @@ export default function ServerBar({ servers, ispublic, globalServer, getEverythi
         <>
             <ul className='list-none p-1 text-xl'>
                 {servers.filter(s => s.is_Public === ispublic).map((server) => (
-                    <li key={server.id} onContextMenu={(e) => prevendefault(e, server)} className={` ${selected(server)}   rounded-2xl cursor-pointer pl-4 m-1 transition-colors duration-500 hover:bg-[#d3d6db]`} onClick={() => setServerSelected(server)}> {server.name} </li>// hover:bg-[#36393f]
+                    <li key={server.id} onContextMenu={(e) => prevendefault(e, server)} className={` ${selected(server)}   rounded-2xl cursor-pointer pl-4 m-1 transition-colors duration-500 hover:bg-[var(--chat)]`} onClick={() => setServerSelected(server)}> {server.name} </li>// hover:bg-[#36393f]
                 ))}
-                {menu.visible && <WOptionS X={menu.x} Y={menu.y} leaveServer={leaveServer} addChat={setAddChatState} deteleServer={() => { if (serverRightClick) deleteServer(serverRightClick?.id) } } addUsertoServer={setAddDeleteUsertoServerState} adding={setAddingUser} owner={serverRightClick ? serverRightClick?.ownerUsername : ""}  showmode={setShowMode}></WOptionS>}
+                {menu && <WOptionS {...allProp}></WOptionS>}
             </ul>
             {
                 addChatState && (
-                    <div className='fixed top-0 left-0 w-full h-full bg-gray-900/80 flex justify-center items-center text-white'>
-                        <div className='bg-gradient-to-tl from-sky-600 to-sky-900 p-4 rounded-lg'>
+                    <div className={`fixed top-0 left-0 w-full h-full bg-gray-900/80 flex justify-center items-center text-[var(--text)] ${theme}`}>
+                        <div className='bg-gradient-to-tl from-[var(--chat)] to-[var(--chat)]/80 p-4 rounded-lg'>
                             <h2 className='text-xl mb-4'>Add Chat</h2>
                             <input type="text" value={newChatName} onChange={(e) => setNewChatName(e.target.value)} placeholder="Chat Name" className='border p-2 rounded w-full mb-4' />
-                            <button onClick={() => { if (serverRightClick) createChat(newChatName, serverRightClick.id) }} className='bg-blue-500 text-white p-2 rounded'>Create Chat</button>
+                            <button onClick={() => { if (serverRightClick) createChat(newChatName, serverRightClick.id) }} className='bg-blue-500 text-[var(--text)] p-2 rounded'>Create Chat</button>
                             <button onClick={() => setAddChatState(false)} className='ml-2 bg-red-500 text-white p-2 rounded'>Close</button>
                         </div>
                     </div>
@@ -157,9 +132,9 @@ export default function ServerBar({ servers, ispublic, globalServer, getEverythi
                 )
             }
             {
-                addDeleteUsertoServerState && <ServerMember adding={addingUser} idServer={serverRightClick ? serverRightClick.id : 0} addUsertoServer={setAddDeleteUsertoServerState} sGlobalText={sGlobalText}></ServerMember>
+                addDeleteUsertoServerState && <ServerMember adding={addingUser} idServer={serverRightClick ? serverRightClick.id : 0}  showing={setAddDeleteUsertoServerState}></ServerMember>
             }
-            {showMode && <ShowModerators showing={setShowMode} server_id={serverRightClick ? serverRightClick.id : 0}/>}
+            {showMode && <ShowModerators showing={setShowMode} server_id={serverRightClick ? serverRightClick.id : 3} />}
         </>
     )
 }
