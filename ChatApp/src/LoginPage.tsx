@@ -59,7 +59,7 @@ export default function HomePage() {
   }, [visible])
 
 
-  const goToGoogle =()=>{
+  const goToGoogle = () => {
     window.location.href = "http://localhost:8080/oauth2/authorization/google"
   }
 
@@ -119,8 +119,11 @@ export default function HomePage() {
               <svg width="28" height="28" className="hover:cursor-pointer ">
                 <use href={`${sprite}#gitlogin`} />
               </svg>
+              <svg width="19" height="19" className=" hover:cursor-pointer">
+                <use href={`${sprite}#x`} />
+              </svg>
               <svg width="26" height="26" className="hover:cursor-pointer" onClick={goToGoogle}>
-                <use href={`${sprite}#google`}  />
+                <use href={`${sprite}#google`} />
               </svg>
             </div>
           </div>

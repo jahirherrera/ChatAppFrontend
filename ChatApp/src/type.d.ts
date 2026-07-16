@@ -27,6 +27,12 @@ export interface Server {
     is_Public: boolean;
 }
 
+export interface starsName{
+    amount: number;
+    usernameFrom: string;
+    usernameTo: string;
+}
+
 export interface Message {
     id: number;
     content: string;

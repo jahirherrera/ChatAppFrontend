@@ -51,7 +51,8 @@ export default function ShowProfile({ usernameUser,showing }: profile) {
                         {/* Inline mask for the stars */}
                         <svg width="0" height="0">
                             <mask id="starMask">
-                                {[...Array(5)].map((_, i) => (
+                                {/* Here is where we define the star mask */}
+                                {[...Array(user?.starsGiven)].map((_, i) => (
                                     <svg key={i} x={i * 26} width="26" height="26" viewBox="0 0 24 24">
                                         <path
                                             d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2
@@ -68,7 +69,7 @@ export default function ShowProfile({ usernameUser,showing }: profile) {
                             <div
                                 className="absolute top-0 left-0 h-full bg-yellow-400"
                                 style={{
-                                    width: `${(user?.starsGiven ?? 0/ 5) * 100}%`, // Dynamic fill
+                                    width: `${(5) * 100}%`, // Dynamic fill
                                     mask: 'url(#starMask)',
                                     WebkitMask: 'url(#starMask)',
                                 }}

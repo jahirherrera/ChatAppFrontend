@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import ProfileEdit from "./profileEdit";
 import Theme from "./theme";
+import ViewStars from "./viewStars";
 import { useNavigate } from "react-router-dom";
 
 
@@ -17,15 +18,24 @@ export default function SettingPage() {
 
     const [showProfile, setShowProfile] = useState(true);
     const [showTheme, setShowTheme] = useState(false);
+    const [showStars, setShowStars] = useState(false);
     
     function myAccountTrue(){
         setShowProfile(true);
         setShowTheme(false);
+        setShowStars(false);
     }
 
     function themetrue(){
         setShowProfile(false);
         setShowTheme(true);
+        setShowStars(false);
+    }
+
+    function setShowStar(){
+        setShowProfile(false);
+        setShowTheme(false);
+        setShowStars(true);
     }
 
 
@@ -36,7 +46,7 @@ export default function SettingPage() {
                     <button className="pl-1 m-1 rounded hover:cursor-pointer w-full hover:bg-[var(--hover)] flex" onClick={myAccountTrue}>My Account</button> 
                     <button className=" pl-1 m-1 rounded hover:cursor-pointer w-full hover:bg-[var(--hover)] flex" onClick={themetrue}>Theme / Appearance</button> 
                     <button className=" pl-1 m-1 rounded hover:cursor-pointer w-full hover:bg-[var(--hover)] flex">Language</button>
-                    <button className=" pl-1 m-1 rounded hover:cursor-pointer w-full hover:bg-[var(--hover)] flex">View Stars</button>
+                    <button className=" pl-1 m-1 rounded hover:cursor-pointer w-full hover:bg-[var(--hover)] flex" onClick={setShowStar}>View Stars</button>
                     <p className="border border-white w-full mr-2 mb-2 mt-2"></p>
                     <button className="m-1 text-red-500">Delete account</button>
                     <button className="m-1 text-red-500 hover:cursor-pointer" onClick={()=>navigate("/home")}>Go back</button>
@@ -46,6 +56,7 @@ export default function SettingPage() {
                 <section className="border-r border-[var(--chat)] h-screen min-w-150 max-w-150 justify-center items-center">
                     {showProfile && <ProfileEdit />}
                     {showTheme && <Theme settheme={setTheme}/>}
+                    {showStars && <ViewStars />}
                 </section>
             </div>
         </>
