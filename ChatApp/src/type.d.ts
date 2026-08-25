@@ -150,9 +150,9 @@ export interface serverInfo {
 export interface userInfo {
     fullname: string;
     username: string;
-    password: string;
     email: string;
     description: string;
+    urlImage : string;
 }
 
 export interface findServerProps {

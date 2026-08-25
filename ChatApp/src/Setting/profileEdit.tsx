@@ -1,4 +1,4 @@
-import { use, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import type { userInfo } from "../type";
 import type { UserLogin } from "../type";
 import DisappearingDiv from "../disapearDiv";
@@ -10,17 +10,25 @@ export default function ProfileEdit() {
     const [password, setPassword] = useState<string>("");
     const [confirmPassword, setConfirmPassword] = useState<string>("");
     const [alertMessage, setAlertMessage] = useState<string>("");
-    const [success, setSuccess] = useState<{message:string;id:number} | null>(null);
-    
+    const [success, setSuccess] = useState<{ message: string; id: number } | null>(null);
+    const [bgImage, setBgImage] = useState<File | null>(null);
+    const [imageUrl, setImageUrl] = useState<string | null>(null);
 
+    const cloudname = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME;
+    const preset = import.meta.env.VITE_CLOUDINARY_PRESET;
+
+    interface CloudinaryResponse {
+        secure_url: string;
+        public_id: string;
+    }
     const [theme, setTheme] = useState<string>("")
 
     const [user, setUser] = useState<userInfo>({
         fullname: "",
         username: "",
         email: "",
-        password: "",
-        description: ""
+        description: "",
+        urlImage: "",
     });
 
     useEffect(() => {
@@ -62,7 +70,7 @@ export default function ProfileEdit() {
     }
 
     const saveChanges = async () => {
-        const user : UserLogin = {
+        const user: UserLogin = {
             username: localStorage.getItem("Username") || "",
             password: password,
         }
@@ -79,24 +87,111 @@ export default function ProfileEdit() {
                 console.log("something were wrong");
             }
             const data = await response.text();
-            if(data  === "succefull") {
+            if (data === "succefull") {
                 //id with the Date.now makes the id to be different every time so the component will be re-rendered and the message will be shown again
-                setSuccess({message:"Password changed successfully",id:Date.now()});
+                setSuccess({ message: "Password changed successfully", id: Date.now() });
                 closePassword();
             }
         }
-        catch (e) {             
+        catch (e) {
             console.log(e)
         }
     }
 
-    
+    const handleSaveChanges = async () => {
+        let updatedUser = {...user};
+        if (bgImage) {
+            const formData = new FormData();
+            formData.append("file", bgImage);
+            formData.append("upload_preset", preset);
+            const imagedSaved = await imageUpload(formData);
+
+            if (!imagedSaved) {
+                console.log("image not saved");
+                return;
+            }
+            updatedUser.urlImage = imagedSaved;
+
+        }
+
+        try {
+            const response = await fetch(`http://localhost:8080/updateInfo`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                credentials: "include",
+                body: JSON.stringify(updatedUser),
+            });
+            if (!response.ok) {
+                console.log("something were wrong");
+                return;
+            }
+            setUser(updatedUser);
+            setSuccess({ message: "Changes saved successfully", id: Date.now() });
+            setImageUrl(updatedUser.urlImage);
+        }
+        catch (e) {
+            console.log(e)
+        }
+
+    }
+
+    const imageUpload = async (formData: FormData) => {
+        try {
+            const response = await fetch(`https://api.cloudinary.com/v1_1/${cloudname}/image/upload`, {
+                method: "POST",
+                body: formData,
+            });
+            if (!response.ok) {
+                console.log("something were wrong");
+                return null;
+            }
+            const data: CloudinaryResponse = await response.json();
+            return data.secure_url;
+        }
+        catch (e) {
+            console.log(e)
+        }
+    }
+
+
+
+    const selectinPicture = (event: React.FormEvent<HTMLInputElement>) => {
+        const file = event.target.files[0];
+        if (!file) {
+            console.log("no file selected");
+            return;
+        }
+
+        const nameOfTheFile = file.name;
+        const lastFour = nameOfTheFile.slice(-4).toLowerCase();
+        const lastFive = nameOfTheFile.slice(-5).toLowerCase();
+        if (lastFour === ".jpg" || lastFour === ".png" || lastFour === ".mov" || lastFour === ".webp" || lastFive === ".jpeg") {
+            setBgImage(file);
+            console.log("valid file");
+        } else {
+            console.log("invalid file");
+        }
+
+    }
+
+
+
+
 
 
     return (
         <div className={`w-full h-full flex flex-col justify-around items-center ${theme}`}>
             <div>
-                <p className="w-50 h-50 bg-[var(--hover)] rounded-full border  mb-3"></p>
+                <input type="file" onChange={selectinPicture} className={`w-10 h-10  border mb-3 bg-[var(--chat)]`} />
+                <div className={`w-50 h-50  border mb-3 rounded-full`}
+                    style={{
+                        backgroundImage: imageUrl ? `url(${imageUrl})` : "none",
+                        backgroundSize: "cover",
+                        backgroundPosition: "center",
+                        backgroundRepeat: "no-repeat",
+                    }} />
             </div>
 
             <div>
@@ -137,7 +232,7 @@ export default function ProfileEdit() {
             </div>
 
             <div>
-                <button className=" bg-[var(--hover)] rounded p-1 text-[var(--text)]">Save Changes</button>
+                <button className=" bg-[var(--hover)] rounded p-1 text-[var(--text)] hover:cursor-pointer hover:bg-[var(--hover)]/80" onClick={handleSaveChanges}>Save Changes</button>
             </div>
             {success && <DisappearingDiv key={success.id} text={success.message} />}
         </div>
